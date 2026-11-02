@@ -46,8 +46,11 @@
         a { text-decoration: none; color: inherit; }
 
         .app-shell { min-height: 100vh; position: relative; }
-        .sidebar { width: 244px; position: fixed; inset: 0 auto 0 0; background: #fff; border-right: 1px solid #e7ebe7; display: flex; flex-direction: column; padding: 29px 18px 0; z-index: 40; }
-        .brand { display: flex; align-items: center; gap: 10px; font-family: 'Manrope', sans-serif; font-size: 29px; font-weight: 800; letter-spacing: -1.6px; padding: 0 8px; height: 39px; }
+        .sidebar { width: 244px; position: fixed; inset: 0 auto 0 0; background: #fff; border-right: 1px solid #e7ebe7; display: flex; flex-direction: column; padding: 24px 18px 24px; z-index: 40; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; scrollbar-color: #d8ded5 transparent; }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #d8ded5; border-radius: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .brand { display: flex; align-items: center; gap: 10px; font-family: 'Manrope', sans-serif; font-size: 29px; font-weight: 800; letter-spacing: -1.6px; padding: 0 8px; height: 39px; flex-shrink: 0; }
         .brand-dot { color: #4f8054; }
         .brand-symbol { display: flex; align-items: flex-end; gap: 3px; height: 26px; transform: rotate(-10deg); margin-right: 1px; }
         .brand-symbol span { width: 7px; height: 16px; background: #336b4b; border-radius: 3px; display: inline-block; }
@@ -55,23 +58,23 @@
         .brand-symbol span:nth-child(3) { height: 20px; background: #a1b889; }
         .brand-tag { font: 600 7px 'DM Sans', sans-serif; letter-spacing: 1px; align-self: flex-end; margin: 0 0 8px -3px; color: #839087; }
 
-        .workspace-switch { display: flex; align-items: center; gap: 9px; text-align: left; border: 1px solid #e7ebe7; border-radius: 8px; padding: 11px 9px; width: 100%; margin-top: 29px; background: #fcfdfb; }
+        .workspace-switch { display: flex; align-items: center; gap: 9px; text-align: left; border: 1px solid #e7ebe7; border-radius: 8px; padding: 11px 9px; width: 100%; margin-top: 20px; background: #fcfdfb; flex-shrink: 0; }
         .company-icon { background: #edf0e8; color: #5e7450; height: 33px; width: 33px; display: grid; place-items: center; border-radius: 7px; flex-shrink: 0; }
         .workspace-switch strong { font-size: 10.5px; font-weight: 650; display: block; color: #232c25; }
         .workspace-switch small { color: #939b94; font-size: 9px; display: block; margin-top: 4px; }
         .workspace-switch > svg { margin-left: auto; color: #8f9891; }
 
-        .nav-caption { font-size: 9px; font-weight: 600; letter-spacing: 1.35px; color: #949e97; padding: 28px 13px 14px; }
-        .nav-item { display: flex; align-items: center; gap: 12px; height: 45px; padding: 0 13px; color: #6c756f; width: 100%; border-radius: 7px; margin-bottom: 5px; font-weight: 500; font-size: 12px; text-align: left; text-decoration: none; }
+        .nav-caption { font-size: 9px; font-weight: 600; letter-spacing: 1.35px; color: #949e97; padding: 20px 13px 10px; flex-shrink: 0; }
+        .nav-item { display: flex; align-items: center; gap: 12px; height: 42px; padding: 0 13px; color: #6c756f; width: 100%; border-radius: 7px; margin-bottom: 4px; font-weight: 500; font-size: 12px; text-align: left; text-decoration: none; flex-shrink: 0; }
         .nav-item > svg { color: #879188; flex-shrink: 0; }
         .nav-item:hover { background: #f5f7f2; color: #242d2a; }
         .nav-item.active { background: #eaf1e5; color: #386245; font-weight: 650; }
         .nav-item.active > svg { color: #3e694d; }
         .nav-count { margin-left: auto; font-size: 10px; border: 1px solid #e7ebe7; color: #8a938c; border-radius: 4px; padding: 0 5px; line-height: 18px; }
         .active-dot { margin-left: auto; background: #42724b; width: 6px; height: 6px; border-radius: 50%; }
-        .other-caption { padding-top: 27px; }
+        .other-caption { padding-top: 18px; }
 
-        .sidebar-bottom { margin-top: auto; padding-top: 35px; }
+        .sidebar-bottom { margin-top: auto; padding-top: 20px; flex-shrink: 0; }
 
         .profile { display: flex; gap: 10px; align-items: center; padding: 16px 3px; width: 100%; border-top: 1px solid #edf0eb; text-align: left; background: none; border-left: none; border-right: none; border-bottom: none; }
         .profile strong { display: block; font-size: 12px; font-weight: 650; color: #253127; }

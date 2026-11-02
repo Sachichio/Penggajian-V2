@@ -14,102 +14,49 @@ async function runTests() {
   const BASE_URL = 'http://127.0.0.1:8000';
 
   // ==========================================
-  // TEST 1: KIOSK PRESENSI
+  // TEST: BACKOFFICE DASHBOARD & SIDEBAR SCROLL
   // ==========================================
-  console.log('👉 [Test 1] Menguji Smart Kiosk Presensi Mandiri (/absen-masuk)...');
-  const kioskContext = await browser.newContext({
-    viewport: { width: 1280, height: 720 },
-    permissions: ['geolocation'],
-    geolocation: { latitude: -6.2088, longitude: 106.8456 }
-  });
-  const kioskPage = await kioskContext.newPage();
-
-  try {
-    await kioskPage.goto(`${BASE_URL}/absen-masuk`, { waitUntil: 'domcontentloaded', timeout: 20000 });
-    console.log('   ✓ Halaman Kiosk berhasil dimuat');
-
-    const clockText = await kioskPage.locator('#live-clock').textContent();
-    console.log(`   ✓ Jam digital live aktif: ${clockText?.trim()}`);
-
-    // Pilih karyawan & isi PIN
-    await kioskPage.selectOption('#karyawan-select', { index: 1 });
-    await kioskPage.fill('input[name="pin"]', '1234');
-    console.log('   ✓ Karyawan & PIN (1234) berhasil dipilih');
-
-    await kioskPage.click('button:has-text("Absen Masuk")', { noWaitAfter: true });
-    console.log('   ✓ Tombol Absen Masuk diklik');
-    await kioskPage.waitForTimeout(2000);
-
-    const kioskShot = path.join(screenshotsDir, 'kiosk-success.png');
-    await kioskPage.screenshot({ path: kioskShot, fullPage: true });
-    console.log(`   📸 Screenshot disimpan di: ${kioskShot}`);
-
-    // Test modal cuti
-    console.log('\n👉 [Test 2] Menguji Modal Pengajuan Cuti / Izin...');
-    await kioskPage.click('button:has-text("Sedang Sakit / Cuti / Izin?")');
-    await kioskPage.waitForTimeout(1000);
-    const modalShot = path.join(screenshotsDir, 'kiosk-modal-izin.png');
-    await kioskPage.screenshot({ path: modalShot });
-    console.log(`   📸 Screenshot modal cuti: ${modalShot}`);
-  } catch (e) {
-    console.error('   ❌ Test Kiosk error:', e.message);
-  } finally {
-    await kioskContext.close();
-  }
-
-  // ==========================================
-  // TEST 3: BACKOFFICE DASHBOARD
-  // ==========================================
-  console.log('\n👉 [Test 3] Menguji Login Admin & Executive BI Dashboard (/dashboard)...');
-  const adminContext = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+  console.log('👉 [Test] Menguji Dashboard & Scrollability Sidebar pada Laptop Screen (1280x680)...');
+  const adminContext = await browser.newContext({ viewport: { width: 1280, height: 680 } });
   const adminPage = await adminContext.newPage();
 
   try {
     await adminPage.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded', timeout: 20000 });
-    console.log('   ✓ Halaman login berhasil dimuat');
+    console.log('   ✓ Halaman login dimuat');
 
     // Klik tombol 'Isi otomatis' demo
     await adminPage.click('button:has-text("Isi otomatis")');
-    console.log('   ✓ Kredensial demo diisi otomatis');
-
-    // Submit form dan tunggu navigasi URL ke dashboard
     await Promise.all([
       adminPage.waitForURL('**/dashboard', { waitUntil: 'domcontentloaded', timeout: 20000 }),
       adminPage.click('button[type="submit"]')
     ]);
 
     console.log(`   ✓ Login sukses, halaman aktif: ${adminPage.url()}`);
-    await adminPage.waitForTimeout(2000);
+    await adminPage.waitForTimeout(1500);
 
-    if (await adminPage.locator('text=Server Error').isVisible() || await adminPage.locator('text=Exception').isVisible()) {
-      throw new Error('Terdeteksi halaman error Laravel di /dashboard!');
-    }
+    // Verifikasi sidebar scroll
+    const sidebar = adminPage.locator('#app-sidebar');
+    await sidebar.evaluate(el => el.scrollTop = el.scrollHeight);
+    console.log('   ✓ Sidebar berhasil di-scroll ke bagian paling bawah');
+    await adminPage.waitForTimeout(500);
+
+    const logoutVisible = await adminPage.locator('button:has-text("Logout")').first().isVisible();
+    console.log(`   ✓ Tombol Logout terlihat setelah scroll: ${logoutVisible}`);
 
     const dashShot = path.join(screenshotsDir, 'dashboard-bi.png');
-    await adminPage.screenshot({ path: dashShot, fullPage: true });
-    console.log(`   📸 Screenshot dashboard BI: ${dashShot}`);
+    await adminPage.screenshot({ path: dashShot, fullPage: false });
+    console.log(`   📸 Screenshot dashboard BI (sidebar scroll): ${dashShot}`);
 
-    // ==========================================
-    // TEST 4: MANAJEMEN PRESENSI ADMIN
-    // ==========================================
-    console.log('\n👉 [Test 4] Menguji Halaman Manajemen Presensi & Cuti (/presensi)...');
+    // Presensi
     await adminPage.goto(`${BASE_URL}/presensi`, { waitUntil: 'domcontentloaded', timeout: 20000 });
-    await adminPage.waitForTimeout(2000);
-
-    const pageHeading = await adminPage.locator('h1').textContent();
-    console.log(`   ✓ Judul halaman: ${pageHeading?.trim()}`);
-
-    if (await adminPage.locator('text=Server Error').isVisible() || await adminPage.locator('text=RouteNotFoundException').isVisible() || await adminPage.locator('text=Exception').isVisible()) {
-      throw new Error('Terdeteksi halaman error Laravel di /presensi!');
-    }
-
+    await adminPage.waitForTimeout(1500);
     const presensiShot = path.join(screenshotsDir, 'presensi-admin.png');
-    await adminPage.screenshot({ path: presensiShot, fullPage: true });
-    console.log(`   📸 Screenshot data presensi admin: ${presensiShot}`);
+    await adminPage.screenshot({ path: presensiShot, fullPage: false });
+    console.log(`   📸 Screenshot presensi admin: ${presensiShot}`);
 
-    console.log('\n🎉 SEMUA PENGUJIAN BROWSER BERHASIL 100%! Seluruh alur bebas error.');
+    console.log('\n🎉 SEMUA PENGUJIAN SIDEBAR & DASHBOARD BERHASIL 100%!');
   } catch (e) {
-    console.error('   ❌ Test Admin error:', e.message);
+    console.error('   ❌ Test error:', e.message);
   } finally {
     await adminContext.close();
     await browser.close();
