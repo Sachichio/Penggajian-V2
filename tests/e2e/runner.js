@@ -68,18 +68,23 @@ async function runTests() {
     await adminPage.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded', timeout: 20000 });
     console.log('   ✓ Halaman login berhasil dimuat');
 
-    await adminPage.fill('#login-email', 'admin@gmail.com');
-    await adminPage.fill('#login-password', '123');
-    await adminPage.click('button[type="submit"]', { noWaitAfter: true });
-    console.log('   ✓ Form login disubmit');
-    await adminPage.waitForTimeout(3000);
+    // Klik tombol 'Isi otomatis' demo
+    await adminPage.click('button:has-text("Isi otomatis")');
+    console.log('   ✓ Kredensial demo diisi otomatis');
 
-    if (!adminPage.url().includes('/dashboard')) {
-      await adminPage.goto(`${BASE_URL}/dashboard`, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    // Submit form dan tunggu navigasi URL ke dashboard
+    await Promise.all([
+      adminPage.waitForURL('**/dashboard', { waitUntil: 'domcontentloaded', timeout: 20000 }),
+      adminPage.click('button[type="submit"]')
+    ]);
+
+    console.log(`   ✓ Login sukses, halaman aktif: ${adminPage.url()}`);
+    await adminPage.waitForTimeout(2000);
+
+    if (await adminPage.locator('text=Server Error').isVisible() || await adminPage.locator('text=Exception').isVisible()) {
+      throw new Error('Terdeteksi halaman error Laravel di /dashboard!');
     }
 
-    console.log(`   ✓ Halaman aktif: ${adminPage.url()}`);
-    await adminPage.waitForTimeout(2000);
     const dashShot = path.join(screenshotsDir, 'dashboard-bi.png');
     await adminPage.screenshot({ path: dashShot, fullPage: true });
     console.log(`   📸 Screenshot dashboard BI: ${dashShot}`);
@@ -90,11 +95,19 @@ async function runTests() {
     console.log('\n👉 [Test 4] Menguji Halaman Manajemen Presensi & Cuti (/presensi)...');
     await adminPage.goto(`${BASE_URL}/presensi`, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await adminPage.waitForTimeout(2000);
+
+    const pageHeading = await adminPage.locator('h1').textContent();
+    console.log(`   ✓ Judul halaman: ${pageHeading?.trim()}`);
+
+    if (await adminPage.locator('text=Server Error').isVisible() || await adminPage.locator('text=RouteNotFoundException').isVisible() || await adminPage.locator('text=Exception').isVisible()) {
+      throw new Error('Terdeteksi halaman error Laravel di /presensi!');
+    }
+
     const presensiShot = path.join(screenshotsDir, 'presensi-admin.png');
     await adminPage.screenshot({ path: presensiShot, fullPage: true });
     console.log(`   📸 Screenshot data presensi admin: ${presensiShot}`);
 
-    console.log('\n🎉 SEMUA PENGUJIAN BROWSER BERHASIL 100%! Seluruh alur berfungsi sempurna.');
+    console.log('\n🎉 SEMUA PENGUJIAN BROWSER BERHASIL 100%! Seluruh alur bebas error.');
   } catch (e) {
     console.error('   ❌ Test Admin error:', e.message);
   } finally {

@@ -450,7 +450,7 @@
                             <div class="min-w-0 flex-1">
                                 <p class="text-[10px] font-semibold text-[#54684d]">Coba dengan akun demo</p>
                                 <p class="mt-0.5 truncate text-[9.5px] text-[#8b967f]">
-                                    admin@sejahtera.co.id <span class="text-[#b3bcab]">·</span> gajiku2026
+                                    admin@gmail.com <span class="text-[#b3bcab]">·</span> 123
                                 </p>
                             </div>
                             <button 
@@ -512,8 +512,8 @@
     }
 
     function fillDemoCredentials() {
-        document.getElementById('login-email').value = 'admin@sejahtera.co.id';
-        document.getElementById('login-password').value = 'gajiku2026';
+        document.getElementById('login-email').value = 'admin@gmail.com';
+        document.getElementById('login-password').value = '123';
     }
 </script>
 @endsection
