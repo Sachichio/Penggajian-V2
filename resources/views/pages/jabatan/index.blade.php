@@ -3,187 +3,117 @@
 @section('title', 'Data Jabatan')
 
 @section('content')
-
-<div class="p-6">
-
-    {{-- HEADER --}}
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-
-        <div>
-
-            <h1 class="text-3xl font-bold text-slate-800">
-                Data Jabatan
-            </h1>
-
-            <p class="text-slate-500 mt-1">
-                Kelola data jabatan beserta gaji pokok dan tunjangan karyawan.
-            </p>
-
-        </div>
-
-        <a href="{{ route('jabatan.create') }}"
-           class="inline-flex items-center justify-center
-                  bg-gradient-to-r from-cyan-600 to-blue-700
-                  hover:from-cyan-700 hover:to-blue-800
-                  text-white font-semibold
-                  px-5 py-3 rounded-2xl
-                  shadow-lg shadow-cyan-500/20
-                  transition">
-
-            + Tambah Jabatan
-
-        </a>
-
+<section class="page-heading">
+    <div>
+        <div class="heading-eyebrow">STRUKTUR ORGANISASI</div>
+        <h1>Data Jabatan</h1>
+        <p>Kelola data jabatan beserta standar gaji pokok dan tunjangan karyawan.</p>
     </div>
-
-    {{-- ALERT --}}
-    @if(session('success'))
-
-        <div class="mb-5 rounded-xl bg-green-100 border border-green-300 text-green-700 px-5 py-3">
-
-            {{ session('success') }}
-
-        </div>
-
-    @endif
-
-    {{-- TABLE --}}
-    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
-
-        <div class="overflow-x-auto">
-
-            <table class="w-full">
-
-                <thead class="bg-slate-100">
-
-                    <tr>
-
-                        <th class="px-6 py-4 text-left font-bold">
-                            No
-                        </th>
-
-                        <th class="px-6 py-4 text-left font-bold">
-                            Nama Jabatan
-                        </th>
-
-                        <th class="px-6 py-4 text-right font-bold">
-                            Gaji Pokok
-                        </th>
-
-                        <th class="px-6 py-4 text-right font-bold">
-                            Tunjangan
-                        </th>
-
-                        <th class="px-6 py-4 text-center font-bold">
-                            Aksi
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody class="divide-y divide-slate-100">
-
-                    @forelse($jabatans as $item)
-
-                        <tr class="hover:bg-slate-50">
-
-                            <td class="px-6 py-4">
-
-                                {{ $loop->iteration }}
-
-                            </td>
-
-                            <td class="px-6 py-4 font-semibold text-slate-700">
-
-                                {{ $item->nama_jabatan }}
-
-                            </td>
-
-                            <td class="px-6 py-4 text-right">
-
-                                Rp {{ number_format($item->gaji_pokok,0,',','.') }}
-
-                            </td>
-
-                            <td class="px-6 py-4 text-right">
-
-                                Rp {{ number_format($item->tunjangan,0,',','.') }}
-
-                            </td>
-
-                            <td class="px-6 py-4">
-
-                                <div class="flex justify-center gap-2">
-
-                                    <a href="{{ route('jabatan.edit',$item->id) }}"
-                                       class="px-4 py-2 bg-amber-400 hover:bg-amber-500 rounded-xl text-white text-sm">
-
-                                        Edit
-
-                                    </a>
-
-                                    <form
-                                        action="{{ route('jabatan.destroy',$item->id) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus jabatan ini?')">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button
-                                            class="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-xl text-white text-sm">
-
-                                            Hapus
-
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="5" class="text-center py-16">
-
-                                <div class="text-5xl mb-3">
-
-                                    🏢
-
-                                </div>
-
-                                <h3 class="text-lg font-bold text-slate-700">
-
-                                    Belum Ada Data Jabatan
-
-                                </h3>
-
-                                <p class="text-slate-500 mt-2">
-
-                                    Silakan tambahkan data jabatan terlebih dahulu.
-
-                                </p>
-
-                            </td>
-
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
+    <a href="{{ route('jabatan.create') }}" class="button primary">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14" />
+        </svg>
+        Tambah Jabatan
+    </a>
+</section>
+
+@if(session('success'))
+<div class="mb-5 flex items-center gap-2.5 rounded-[8px] border border-[#d6e5cd] bg-[#f2f8ed] px-4 py-3 text-[11.5px] font-medium text-[#3b6b47]">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-forest shrink-0">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span>{{ session('success') }}</span>
 </div>
+@endif
 
+<div class="panel table-panel mb-8">
+    <div class="table-heading">
+        <div>
+            <h2>
+                Daftar Jabatan
+                <span class="count-badge">{{ count($jabatans) }} jabatan</span>
+            </h2>
+            <p>Struktur posisi dan besaran kompensasi standar perusahaan.</p>
+        </div>
+    </div>
+
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px; text-align: center;">No</th>
+                    <th>Nama Jabatan</th>
+                    <th>Gaji Pokok</th>
+                    <th>Tunjangan</th>
+                    <th>Total Kompensasi</th>
+                    <th style="text-align: center; width: 100px;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($jabatans as $item)
+                @php
+                    $total = ($item->gaji_pokok ?? 0) + ($item->tunjangan ?? 0);
+                @endphp
+                <tr>
+                    <td style="text-align: center; color: #9aa299; font-weight: 500;">
+                        {{ $loop->iteration }}
+                    </td>
+                    <td>
+                        <div class="flex items-center gap-2.5">
+                            <span class="grid h-7 w-7 place-items-center rounded-lg bg-[#eaf0f8] text-[#6986ab]">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="3" y="7" width="18" height="14" rx="2" />
+                                    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12a22 22 0 0 0 18 0M12 11v4" />
+                                </svg>
+                            </span>
+                            <strong style="color: #2b382d; font-size: 11.5px;">{{ $item->nama_jabatan }}</strong>
+                        </div>
+                    </td>
+                    <td style="font-weight: 600; color: #435345;">
+                        Rp {{ number_format($item->gaji_pokok, 0, ',', '.') }}
+                    </td>
+                    <td style="color: #6a786d;">
+                        Rp {{ number_format($item->tunjangan, 0, ',', '.') }}
+                    </td>
+                    <td style="font-weight: 700; color: #326447;">
+                        Rp {{ number_format($total, 0, ',', '.') }}
+                    </td>
+                    <td>
+                        <div class="flex items-center justify-center gap-1.5">
+                            <a href="{{ route('jabatan.edit', $item->id) }}" class="action-icon-btn" title="Edit Jabatan">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </a>
+                            <form action="{{ route('jabatan.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Hapus jabatan {{ $item->nama_jabatan }}?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="action-icon-btn danger" title="Hapus Jabatan">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="py-12 text-center text-[#8e988f]">
+                        Belum ada data jabatan yang ditambahkan.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-footer">
+        <strong>Total {{ count($jabatans) }} jabatan terdaftar</strong>
+        <span>Kompensasi resmi perusahaan</span>
+    </div>
+</div>
 @endsection

@@ -3,250 +3,157 @@
 @section('title', 'Data Karyawan')
 
 @section('content')
-
-<div class="space-y-6">
-
-    {{-- HEADER --}}
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-
-        <div>
-
-            <h1 class="text-3xl font-bold text-slate-800">
-                Data Karyawan
-            </h1>
-
-            <p class="text-slate-500 mt-1">
-                Kelola seluruh data karyawan perusahaan
-            </p>
-
-        </div>
-
-        <a href="{{ route('karyawan.create') }}"
-           class="inline-flex items-center justify-center
-                  px-5 py-3 rounded-2xl
-                  bg-gradient-to-r from-cyan-500 to-blue-600
-                  hover:shadow-lg hover:shadow-cyan-500/30
-                  text-white font-semibold transition">
-
-            + Tambah Karyawan
-
-        </a>
-
+{{-- ========================================================= --}}
+{{-- 1. HEADING HALAMAN (IDENTIK DASHBOARD GAJIKU)              --}}
+{{-- ========================================================= --}}
+<section class="page-heading">
+    <div>
+        <div class="heading-eyebrow">DATA MASTER</div>
+        <h1>Data Karyawan</h1>
+        <p>Kelola seluruh data karyawan, penugasan jabatan, dan status kepegawaian perusahaan.</p>
     </div>
-
-    {{-- Alert --}}
-    @if(session('success'))
-
-        <div class="bg-green-100 border border-green-300 text-green-700 px-5 py-3 rounded-xl">
-
-            {{ session('success') }}
-
-        </div>
-
-    @endif
-
-    {{-- TABLE --}}
-    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
-
-        <div class="overflow-x-auto">
-
-            <table class="w-full">
-
-                <thead class="bg-slate-100">
-
-                    <tr class="text-slate-700">
-
-                        <th class="px-6 py-4 text-left font-semibold">
-                            No
-                        </th>
-
-                        <th class="px-6 py-4 text-left font-semibold">
-                            Karyawan
-                        </th>
-
-                        <th class="px-6 py-4 text-left font-semibold">
-                            Jabatan
-                        </th>
-
-                        <th class="px-6 py-4 text-center font-semibold">
-                            Jenis Kelamin
-                        </th>
-
-                        <th class="px-6 py-4 text-center font-semibold">
-                            Status
-                        </th>
-
-                        <th class="px-6 py-4 text-center font-semibold">
-                            Aksi
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody class="divide-y divide-slate-100">
-
-                    @forelse($karyawans as $item)
-
-                        <tr class="hover:bg-slate-50 transition">
-
-                            {{-- No --}}
-                            <td class="px-6 py-5">
-
-                                {{ $loop->iteration }}
-
-                            </td>
-
-                            {{-- Nama --}}
-                            <td class="px-6 py-5">
-
-                                <div class="flex items-center gap-4">
-
-                                    <div class="w-11 h-11 rounded-2xl
-                                                bg-gradient-to-br from-cyan-500 to-blue-600
-                                                flex items-center justify-center
-                                                text-white font-bold">
-
-                                        {{ strtoupper(substr($item->nama,0,1)) }}
-
-                                    </div>
-
-                                    <div>
-
-                                        <h3 class="font-semibold text-slate-800">
-
-                                            {{ $item->nama }}
-
-                                        </h3>
-
-                                        <p class="text-sm text-slate-400">
-
-                                            {{ $item->nik }}
-
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            {{-- Jabatan --}}
-                            <td class="px-6 py-5 text-slate-600">
-
-                                {{ $item->jabatan->nama_jabatan ?? '-' }}
-
-                            </td>
-
-                            {{-- Jenis Kelamin --}}
-                            <td class="px-6 py-5 text-center">
-
-                                {{ $item->jenis_kelamin }}
-
-                            </td>
-
-                            {{-- Status --}}
-                            <td class="px-6 py-5 text-center">
-
-                                @if($item->status == 'Aktif')
-
-                                    <span class="px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-semibold">
-
-                                        Aktif
-
-                                    </span>
-
-                                @else
-
-                                    <span class="px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-semibold">
-
-                                        Nonaktif
-
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-                            {{-- Aksi --}}
-                            <td class="px-6 py-5">
-
-                                <div class="flex justify-center gap-2">
-
-                                    <a href="{{ route('karyawan.show',$item->id) }}"
-                                       class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-sm">
-
-                                        Detail
-
-                                    </a>
-
-                                    <a href="{{ route('karyawan.edit',$item->id) }}"
-                                       class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-white text-sm">
-
-                                        Edit
-
-                                    </a>
-
-                                    <form action="{{ route('karyawan.destroy',$item->id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Yakin ingin menghapus data karyawan ini?')">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button
-                                            class="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm">
-
-                                            Hapus
-
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="6" class="py-16 text-center">
-
-                                <div class="text-5xl mb-4">
-
-                                    👨‍💼
-
-                                </div>
-
-                                <h3 class="text-lg font-bold text-slate-700">
-
-                                    Belum Ada Data Karyawan
-
-                                </h3>
-
-                                <p class="text-slate-500 mt-2">
-
-                                    Silakan tambahkan data karyawan terlebih dahulu.
-
-                                </p>
-
-                            </td>
-
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
+    <a href="{{ route('karyawan.create') }}" class="button primary">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14" />
+        </svg>
+        Tambah Karyawan
+    </a>
+</section>
+
+{{-- Pesan Sukses / Notifikasi --}}
+@if(session('success'))
+<div class="mb-5 flex items-center gap-2.5 rounded-[8px] border border-[#d6e5cd] bg-[#f2f8ed] px-4 py-3 text-[11.5px] font-medium text-[#3b6b47]">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-forest shrink-0">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span>{{ session('success') }}</span>
 </div>
+@endif
 
+{{-- ========================================================= --}}
+{{-- 2. TABEL PANEL GAJIKU                                     --}}
+{{-- ========================================================= --}}
+<div class="panel table-panel mb-8">
+    {{-- Table Heading --}}
+    <div class="table-heading">
+        <div>
+            <h2>
+                Daftar Karyawan
+                <span class="count-badge">
+                    {{ count($karyawans) }} karyawan
+                </span>
+            </h2>
+            <p>Daftar seluruh karyawan aktif dan nonaktif yang terdaftar di workspace.</p>
+        </div>
+    </div>
+
+    {{-- Table Scroll --}}
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px; text-align: center;">No</th>
+                    <th>Karyawan</th>
+                    <th>Jabatan</th>
+                    <th style="text-align: center;">Jenis Kelamin</th>
+                    <th style="text-align: center;">Status</th>
+                    <th style="text-align: center; width: 120px;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $palette = [
+                        'bg-[#f9eee6] text-[#be9270]',
+                        'bg-[#f0ebf8] text-[#9581b7]',
+                        'bg-[#eaf0f8] text-[#6986ab]',
+                        'bg-[#eaf1e6] text-[#668258]',
+                        'bg-[#f6f1dd] text-[#b19b5c]',
+                    ];
+                @endphp
+                @forelse($karyawans as $index => $item)
+                @php
+                    $init = strtoupper(substr($item->nama, 0, 2));
+                    $colorClass = $palette[$index % count($palette)];
+                @endphp
+                <tr>
+                    <td style="text-align: center; color: #9aa299; font-weight: 500;">
+                        {{ $loop->iteration }}
+                    </td>
+                    <td>
+                        <div class="employee-cell">
+                            <span class="avatar {{ $colorClass }}">{{ $init }}</span>
+                            <div>
+                                <strong>{{ $item->nama }}</strong>
+                                <small>NIK: {{ $item->nik }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span style="font-weight: 550; color: #3d4a3e;">
+                            {{ $item->jabatan->nama_jabatan ?? '-' }}
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <span style="color: #6a766c; font-size: 10.5px;">
+                            {{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        @if($item->status == 'Aktif')
+                            <span class="status-badge">
+                                <span class="status-check">✓</span>
+                                Aktif
+                            </span>
+                        @else
+                            <span class="status-badge-rose">
+                                <span style="display:inline-block; width:5px; height:5px; border-radius:50%; background:#b94a48;"></span>
+                                Nonaktif
+                            </span>
+                        @endif
+                    </td>
+                    <td>
+                        <div class="flex items-center justify-center gap-1.5">
+                            <a href="{{ route('karyawan.show', $item->id) }}" class="action-icon-btn" title="Detail Karyawan">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </a>
+                            <a href="{{ route('karyawan.edit', $item->id) }}" class="action-icon-btn" title="Edit Data">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </a>
+                            <form action="{{ route('karyawan.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Hapus data karyawan {{ $item->nama }}?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="action-icon-btn danger" title="Hapus Karyawan">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="py-12 text-center text-[#8e988f]">
+                        Belum ada data karyawan yang ditambahkan.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    {{-- Table Footer --}}
+    <div class="table-footer">
+        <strong>Total {{ count($karyawans) }} data terdaftar</strong>
+        <span>Menampilkan seluruh data karyawan</span>
+    </div>
+</div>
 @endsection

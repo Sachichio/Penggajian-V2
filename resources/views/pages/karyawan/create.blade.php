@@ -3,49 +3,27 @@
 @section('title', 'Tambah Karyawan')
 
 @section('content')
-
-<div class="max-w-3xl mx-auto">
-
-    {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-
-        <div>
-
-            <h1 class="text-3xl font-bold text-slate-800">
-                Tambah Karyawan
-            </h1>
-
-            <p class="text-slate-500 mt-1">
-                Tambahkan data karyawan baru ke dalam sistem.
-            </p>
-
-        </div>
-
-        <a href="{{ route('karyawan.index') }}"
-           class="inline-flex items-center px-5 py-3 rounded-2xl
-                  bg-slate-700 hover:bg-slate-800
-                  text-white font-semibold transition">
-
-            ← Kembali
-
-        </a>
-
+<section class="page-heading">
+    <div>
+        <div class="heading-eyebrow">DATA MASTER</div>
+        <h1>Tambah Karyawan Baru</h1>
+        <p>Tambahkan data karyawan baru ke dalam sistem pengelolaan payroll gajiku.</p>
     </div>
+    <a href="{{ route('karyawan.index') }}" class="button secondary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Kembali ke Daftar
+    </a>
+</section>
 
-    {{-- Card Form --}}
-    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8">
-
-        <form action="{{ route('karyawan.store') }}"
-              method="POST">
-
+<div class="max-w-3xl mb-8">
+    <div class="form-card">
+        <form action="{{ route('karyawan.store') }}" method="POST">
             @csrf
-
             @include('pages.karyawan.partials.form')
-
         </form>
-
     </div>
-
 </div>
-
 @endsection

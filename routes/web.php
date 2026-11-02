@@ -164,3 +164,21 @@ Route::middleware(['auth', 'role:admin,owner'])->group(function () {
                 ->name('export');
         });
 });
+
+/**
+ * =========================================
+ * TESTING / PREVIEW HALAMAN ERROR 500
+ * =========================================
+ */
+Route::get('/test-500', function () {
+    abort(500);
+})->name('test.500');
+
+/**
+ * =========================================
+ * ROUTE FALLBACK (PENANGANAN 404 DENGAN SESSION & AUTH AKTIF)
+ * =========================================
+ */
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});

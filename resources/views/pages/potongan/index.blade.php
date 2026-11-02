@@ -3,242 +3,112 @@
 @section('title', 'Kelola Potongan')
 
 @section('content')
+@php
+$bulanList = [
+    1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+    5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+    9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+];
+$bln = is_numeric($penggajian->bulan) ? ($bulanList[(int)$penggajian->bulan] ?? $penggajian->bulan) : $penggajian->bulan;
+@endphp
 
-<div class="space-y-6">
-
-    {{-- Tombol Kembali --}}
+<section class="page-heading">
     <div>
-
-        <a href="{{ route('penggajian.show', $penggajian->id) }}"
-            class="inline-flex items-center px-5 py-3 rounded-2xl
-                   bg-slate-700 hover:bg-slate-800
-                   text-white font-semibold transition">
-
+        <div class="heading-eyebrow">MANAJEMEN PAYROLL</div>
+        <h1>Kelola Potongan Gaji</h1>
+        <p>Rincian potongan untuk <strong>{{ $penggajian->karyawan->nama }}</strong> periode {{ $bln }} {{ $penggajian->tahun }}.</p>
+    </div>
+    <div class="flex items-center gap-2">
+        <a href="{{ route('potongan.create', $penggajian->id) }}" class="button primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
+            Tambah Potongan
+        </a>
+        <a href="{{ route('penggajian.show', $penggajian->id) }}" class="button secondary">
             ← Kembali
-
         </a>
-
     </div>
+</section>
 
+@if(session('success'))
+<div class="mb-5 flex items-center gap-2.5 rounded-[8px] border border-[#d6e5cd] bg-[#f2f8ed] px-4 py-3 text-[11.5px] font-medium text-[#3b6b47]">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-forest shrink-0">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span>{{ session('success') }}</span>
+</div>
+@endif
 
-
-    {{-- Header --}}
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
-
-        <h1 class="text-2xl font-bold text-slate-800">
-
-            Kelola Potongan
-
-        </h1>
-
-        <div class="mt-5 grid md:grid-cols-2 gap-5">
-
-            <div>
-
-                <p class="text-sm text-slate-500">
-                    Karyawan
-                </p>
-
-                <p class="font-semibold text-slate-800">
-
-                    {{ $penggajian->karyawan->nama }}
-
-                </p>
-
-            </div>
-
-            <div>
-
-                <p class="text-sm text-slate-500">
-                    Periode
-                </p>
-
-                <p class="font-semibold text-slate-800">
-
-                @php
-
-                $bulan = [
-                    1=>'Januari',
-                    2=>'Februari',
-                    3=>'Maret',
-                    4=>'April',
-                    5=>'Mei',
-                    6=>'Juni',
-                    7=>'Juli',
-                    8=>'Agustus',
-                    9=>'September',
-                    10=>'Oktober',
-                    11=>'November',
-                    12=>'Desember',
-                ];
-
-                @endphp
-
-                    {{ $bulan[$penggajian->bulan] }}
-                    {{ $penggajian->tahun }}
-
-                </p>
-
-            </div>
-
+<div class="panel table-panel mb-8">
+    <div class="table-heading">
+        <div>
+            <h2>
+                Daftar Potongan
+                <span class="count-badge">{{ count($potongans) }} potongan</span>
+            </h2>
+            <p>Daftar potongan gaji yang dibebankan pada transaksi penggajian ini.</p>
         </div>
-
     </div>
 
-
-
-    {{-- Tombol Tambah --}}
-    <div class="flex justify-end">
-
-        <a href="{{ route('potongan.create', $penggajian->id) }}"
-            class="inline-flex items-center
-                   px-5 py-3
-                   rounded-2xl
-                   bg-cyan-600
-                   hover:bg-cyan-700
-                   text-white
-                   font-semibold">
-
-            + Tambah Potongan
-
-        </a>
-
-    </div>
-
-
-
-    {{-- Tabel --}}
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-
-        <table class="w-full">
-
-            <thead class="bg-slate-50">
-
+    <div class="table-scroll">
+        <table>
+            <thead>
                 <tr>
-
-                    <th class="text-left p-4">
-                        Jenis Potongan
-                    </th>
-
-                    <th class="text-left p-4">
-                        Nominal
-                    </th>
-
-                    <th class="text-center p-4">
-                        Aksi
-                    </th>
-
+                    <th style="width: 45px; text-align: center;">No</th>
+                    <th>Nama Potongan</th>
+                    <th>Nominal Potongan</th>
+                    <th>Keterangan</th>
+                    <th style="text-align: center; width: 100px;">Aksi</th>
                 </tr>
-
             </thead>
-
             <tbody>
-
-                @forelse($penggajian->potongans as $potongan)
-
-                    <tr class="border-t">
-
-                        <td class="p-4">
-
-                            {{ $potongan->jenis_potongan }}
-
-                        </td>
-
-                        <td class="p-4">
-
-                            Rp {{ number_format($potongan->nominal,0,',','.') }}
-
-                        </td>
-
-                        <td class="text-center p-4">
-
-                            <div class="flex justify-center gap-2">
-
-                                <a
-                                    href="{{ route('potongan.edit', $potongan->id) }}"
-                                    class="bg-yellow-500 hover:bg-yellow-600
-                                        text-white
-                                        px-3 py-2
-                                        rounded-xl
-                                        transition">
-
-                                    Edit
-
-                                </a>
-
-                            <form
-                                action="{{ route('potongan.destroy', $potongan->id) }}"
-                                method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus potongan ini?')"
-                                class="inline">
-
+                @forelse($potongans as $item)
+                <tr>
+                    <td style="text-align: center; color: #9aa299; font-weight: 500;">{{ $loop->iteration }}</td>
+                    <td>
+                        <strong style="color: #2b382d;">{{ $item->nama_potongan }}</strong>
+                    </td>
+                    <td style="color: #b94a48; font-weight: 600;">
+                        - Rp {{ number_format($item->nominal, 0, ',', '.') }}
+                    </td>
+                    <td style="color: #7b8774;">{{ $item->keterangan ?? '-' }}</td>
+                    <td>
+                        <div class="flex items-center justify-center gap-1.5">
+                            <a href="{{ route('potongan.edit', $item->id) }}" class="action-icon-btn" title="Edit Potongan">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </a>
+                            <form action="{{ route('potongan.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Hapus potongan {{ $item->nama_potongan }}?')">
                                 @csrf
                                 @method('DELETE')
-
-                                <button
-                                    type="submit"
-                                    class="bg-red-500 hover:bg-red-600
-                                        text-white
-                                        px-3 py-2
-                                        rounded-xl
-                                        transition">
-
-                                    Hapus
-
+                                <button type="submit" class="action-icon-btn danger" title="Hapus Potongan">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    </svg>
                                 </button>
-
                             </form>
-                            </div>
-
-                        </td>
-
-                    </tr>
-
+                        </div>
+                    </td>
+                </tr>
                 @empty
-
-                    <tr>
-
-                        <td colspan="3"
-                            class="text-center text-slate-400 py-10">
-
-                            Belum ada data potongan.
-
-                        </td>
-
-                    </tr>
-
+                <tr>
+                    <td colspan="5" class="py-12 text-center text-[#8e988f]">
+                        Belum ada data potongan pada penggajian ini.
+                    </td>
+                </tr>
                 @endforelse
-
             </tbody>
-
         </table>
-
     </div>
 
-
-
-    {{-- Total --}}
-    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
-
-        <div class="flex justify-between items-center">
-
-            <h2 class="text-lg font-bold">
-
-                Total Potongan
-
-            </h2>
-
-            <h2 class="text-2xl font-bold text-red-600">
-
-                Rp
-                {{ number_format($penggajian->potongans->sum('nominal'),0,',','.') }}
-
-            </h2>
-
-        </div>
-
+    <div class="table-footer">
+        <strong>Total {{ count($potongans) }} potongan tercatat</strong>
+        <span>Karyawan: {{ $penggajian->karyawan->nama }}</span>
     </div>
-
 </div>
-
 @endsection
