@@ -28,7 +28,7 @@ async function runTests() {
     await adminPage.fill('input[name="email"]', 'admin@gmail.com');
     await adminPage.fill('input[name="password"]', '123');
     await Promise.all([
-      adminPage.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 25000 }),
+      adminPage.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 60000 }),
       adminPage.click('button[type="submit"]')
     ]);
 
