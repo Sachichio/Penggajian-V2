@@ -160,7 +160,7 @@
             <!-- Filter Tanggal & Pencarian -->
             <div class="flex flex-wrap items-center gap-3">
                 <div class="relative">
-                    <input type="text" id="presensi-search-input" onkeyup="filterPresensiTable()" placeholder="Cari nama atau NIK..." class="rounded-xl border border-neutral-300 pl-8 pr-3 py-1.5 text-xs focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest w-48">
+                    <input type="text" id="presensi-search-input" oninput="filterPresensiTable()" placeholder="Cari nama atau NIK..." class="rounded-xl border border-neutral-300 pl-8 pr-3 py-1.5 text-xs focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest w-48">
                     <svg class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>

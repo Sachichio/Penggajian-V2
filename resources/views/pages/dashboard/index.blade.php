@@ -289,7 +289,7 @@
                 <circle cx="10.8" cy="10.8" r="7.3" />
                 <path d="m16 16 5 5" />
             </svg>
-            <input id="payroll-search-input" onkeyup="filterTableRows()" placeholder="Cari nama karyawan..." />
+            <input id="payroll-search-input" oninput="filterTableRows()" placeholder="Cari nama karyawan..." />
         </label>
 
         <div class="table-filters">
@@ -499,7 +499,7 @@
         });
     }
 
-    // Shortcut ⌘K / Ctrl+K fokus ke pencarian
+    // Shortcut Ctrl+K fokus ke pencarian
     document.addEventListener('keydown', function(e) {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
             e.preventDefault();

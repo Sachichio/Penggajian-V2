@@ -38,7 +38,7 @@ $namaBulan = [
                 <circle cx="10.8" cy="10.8" r="7.3" />
                 <path d="m16 16 5 5" />
             </svg>
-            <input id="laporan-search-input" onkeyup="filterLaporanTable()" placeholder="Cari periode bulan atau tahun..." />
+            <input id="laporan-search-input" oninput="filterLaporanTable()" placeholder="Cari periode bulan atau tahun..." />
         </label>
     </div>
 

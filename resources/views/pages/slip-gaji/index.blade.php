@@ -44,7 +44,7 @@ $palette = [
                 <circle cx="10.8" cy="10.8" r="7.3" />
                 <path d="m16 16 5 5" />
             </svg>
-            <input id="slip-search-input" onkeyup="filterSlipTable()" placeholder="Cari nama karyawan atau NIK..." />
+            <input id="slip-search-input" oninput="filterSlipTable()" placeholder="Cari nama karyawan atau NIK..." />
         </label>
 
         <div class="table-filters">
@@ -173,7 +173,8 @@ $palette = [
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
             const matchesSearch = text.includes(search);
-            const matchesMonth = month === '' || text.includes(month);
+            const periodeCell = row.children[3] ? row.children[3].textContent.toLowerCase() : '';
+            const matchesMonth = month === '' || periodeCell.includes(month);
 
             if (matchesSearch && matchesMonth) {
                 row.style.display = '';

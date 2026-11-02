@@ -55,7 +55,7 @@
                 <circle cx="10.8" cy="10.8" r="7.3" />
                 <path d="m16 16 5 5" />
             </svg>
-            <input id="karyawan-search-input" onkeyup="filterKaryawanTable()" placeholder="Cari nama atau NIK karyawan..." />
+            <input id="karyawan-search-input" oninput="filterKaryawanTable()" placeholder="Cari nama atau NIK karyawan..." />
         </label>
 
         <div class="table-filters" style="display: flex; gap: 8px;">
@@ -193,10 +193,10 @@
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
             const statusBadge = row.querySelector('.status-badge, .status-badge-rose');
-            const statusText = statusBadge ? statusBadge.textContent.toLowerCase() : '';
+            const statusText = statusBadge ? statusBadge.textContent.replace('✓', '').trim().toLowerCase() : '';
 
             const matchesSearch = text.includes(search);
-            const matchesStatus = status === '' || statusText.includes(status);
+            const matchesStatus = status === '' || statusText === status;
 
             if (matchesSearch && matchesStatus) {
                 row.style.display = '';

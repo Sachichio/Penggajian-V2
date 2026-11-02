@@ -45,7 +45,7 @@
                 <circle cx="10.8" cy="10.8" r="7.3" />
                 <path d="m16 16 5 5" />
             </svg>
-            <input id="jabatan-search-input" onkeyup="filterJabatanTable()" placeholder="Cari nama jabatan..." />
+            <input id="jabatan-search-input" oninput="filterJabatanTable()" placeholder="Cari nama jabatan..." />
         </label>
     </div>
 
