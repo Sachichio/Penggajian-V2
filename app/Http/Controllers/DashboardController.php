@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $tahunSekarang = Carbon::now()->year;
 
         /**
-         * 4 METRIK STATISTIK UTAMA (SESUAI GAMBAR 1)
+         * 4 METRIK STATISTIK UTAMA
          */
         $countKaryawan = Karyawan::count() ?: 11;
         $countJabatan = Jabatan::count() ?: 8;
@@ -36,7 +36,7 @@ class DashboardController extends Controller
         $totalUser = str_pad($countUser, 2, '0', STR_PAD_LEFT);
 
         /**
-         * PENGGAJIAN TERBARU (SESUAI GAMBAR 2)
+         * PENGGAJIAN TERBARU
          */
         $penggajianTerbaru = Penggajian::with(['karyawan.jabatan'])
             ->latest('tanggal_gaji')
@@ -49,6 +49,55 @@ class DashboardController extends Controller
         // Ambil daftar bulan unik untuk filter dropdown
         $daftarBulanTersedia = Penggajian::distinct()->pluck('bulan')->filter()->values()->all();
 
+        /**
+         * BUSINESS INTELLIGENCE METRICS & CHARTS (FASE 3)
+         */
+        // 1. Total Biaya Payroll Keseluruhan & Rata-rata Gaji
+        $totalPayrollCost = Penggajian::sum('total_gaji');
+        $avgSalary = $countPenggajian > 0 ? ($totalPayrollCost / $countPenggajian) : 0;
+
+        // 2. Data Tren Pengeluaran Payroll (6 Periode Terakhir atau berdasarkan Data)
+        $trendData = Penggajian::selectRaw('bulan, tahun, SUM(total_gaji) as total')
+            ->groupBy('bulan', 'tahun')
+            ->orderBy('tahun', 'asc')
+            ->take(6)
+            ->get();
+
+        $trendLabels = [];
+        $trendValues = [];
+        if ($trendData->isNotEmpty()) {
+            foreach ($trendData as $row) {
+                $trendLabels[] = ($namaBulanIndo[$row->bulan] ?? 'Bln ' . $row->bulan) . ' ' . $row->tahun;
+                $trendValues[] = (int) $row->total;
+            }
+        } else {
+            // Dummy visual fallback for BNSP demo
+            $trendLabels = ['Mei 2026', 'Juni 2026', 'Juli 2026', 'Agustus 2026'];
+            $trendValues = [35000000, 42000000, 48500000, 52000000];
+        }
+
+        // 3. Proporsi Pengeluaran Gaji Berdasarkan Jabatan
+        $jabatanDistribution = Jabatan::with('karyawans.penggajians')->get()->map(function ($jabatan) {
+            $totalGajiJabatan = 0;
+            foreach ($jabatan->karyawans as $k) {
+                $totalGajiJabatan += $k->penggajians->sum('total_gaji');
+            }
+            return [
+                'nama' => $jabatan->nama_jabatan,
+                'total' => $totalGajiJabatan
+            ];
+        })->filter(fn($item) => $item['total'] > 0)->values();
+
+        $jabatanLabels = [];
+        $jabatanValues = [];
+        if ($jabatanDistribution->isNotEmpty()) {
+            $jabatanLabels = $jabatanDistribution->pluck('nama')->all();
+            $jabatanValues = $jabatanDistribution->pluck('total')->all();
+        } else {
+            $jabatanLabels = ['Direktur', 'Manager IT', 'Software Engineer', 'Staff Admin', 'HR Specialist'];
+            $jabatanValues = [25000000, 18000000, 22000000, 8000000, 9500000];
+        }
+
         return view('pages.dashboard.index', compact(
             'totalKaryawan',
             'totalJabatan',
@@ -59,7 +108,13 @@ class DashboardController extends Controller
             'penggajianTerbaru',
             'totalDataTersedia',
             'namaBulanIndo',
-            'daftarBulanTersedia'
+            'daftarBulanTersedia',
+            'totalPayrollCost',
+            'avgSalary',
+            'trendLabels',
+            'trendValues',
+            'jabatanLabels',
+            'jabatanValues'
         ));
     }
 }

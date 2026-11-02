@@ -195,7 +195,23 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 gajiPokok.value = data.gaji_pokok || 0;
                 tunjangan.value = data.tunjangan || 0;
-                hitungGaji();
+                
+                // Ambil info absensi otomatis (Fase 3 Attendance Integration)
+                const bulanVal = document.querySelector('select[name="bulan"]').value;
+                const tahunVal = document.querySelector('input[name="tahun"]').value;
+                if (bulanVal && tahunVal) {
+                    fetch(`/api/karyawan/${this.value}/attendance-summary?bulan=${bulanVal}&tahun=${tahunVal}`)
+                        .then(r => r.json())
+                        .then(att => {
+                            if (att.jam_lembur !== undefined) {
+                                jamLembur.value = att.jam_lembur;
+                            }
+                            hitungGaji();
+                        })
+                        .catch(() => hitungGaji());
+                } else {
+                    hitungGaji();
+                }
             })
             .catch(() => {
                 hitungGaji();

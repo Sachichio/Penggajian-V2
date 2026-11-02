@@ -15,6 +15,8 @@ class Karyawan extends Model
         'jenis_kelamin',
         'tanggal_masuk',
         'status',
+        'pin',
+        'sisa_cuti',
     ];
 
     /**
@@ -31,5 +33,21 @@ class Karyawan extends Model
     public function penggajians(): HasMany
     {
         return $this->hasMany(Penggajian::class);
+    }
+
+    /**
+     * Relasi ke Presensi
+     */
+    public function presensis(): HasMany
+    {
+        return $this->hasMany(Presensi::class);
+    }
+
+    /**
+     * Relasi ke Pengajuan Izin
+     */
+    public function pengajuanIzins(): HasMany
+    {
+        return $this->hasMany(PengajuanIzin::class);
     }
 }

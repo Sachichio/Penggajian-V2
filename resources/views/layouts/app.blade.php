@@ -294,6 +294,17 @@
                 @endif
             </a>
 
+            {{-- Presensi & Cuti --}}
+            <a href="{{ route('presensi.index') }}" class="nav-item {{ request()->routeIs('presensi.*') ? 'active' : '' }}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                </svg>
+                <span>Presensi & Cuti</span>
+                @if(request()->routeIs('presensi.*'))
+                <span class="active-dot"></span>
+                @endif
+            </a>
+
             {{-- Penggajian --}}
             <a href="{{ route('penggajian.index') }}" class="nav-item {{ request()->routeIs('penggajian.*') ? 'active' : '' }}">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">

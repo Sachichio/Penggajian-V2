@@ -21,6 +21,12 @@ class Penggajian extends Model
         'total_potongan',
         'thp',
         'tanggal_gaji',
+        'status_approval',
+        'hari_kerja_efektif',
+        'total_hadir',
+        'total_sakit',
+        'total_izin',
+        'total_alpa',
     ];
 
     /**

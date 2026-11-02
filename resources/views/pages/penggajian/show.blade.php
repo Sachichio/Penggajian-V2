@@ -19,6 +19,17 @@ $bln = is_numeric($penggajian->bulan) ? ($bulanList[(int)$penggajian->bulan] ?? 
         <p>Rincian lengkap perhitungan gaji karyawan periode <strong>{{ $bln }} {{ $penggajian->tahun }}</strong>.</p>
     </div>
     <div class="flex items-center gap-2">
+        @if(auth()->user() && auth()->user()->role === 'owner' && ($penggajian->status_approval ?? 'pending') === 'pending')
+            <form action="{{ route('penggajian.approve', $penggajian->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="button primary" style="background: #2563eb; border-color: #2563eb;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"></path>
+                    </svg>
+                    ACC Payroll (Owner)
+                </button>
+            </form>
+        @endif
         <a href="{{ route('slip-gaji.show', $penggajian->id) }}" class="button primary">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -40,10 +51,21 @@ $bln = is_numeric($penggajian->bulan) ? ($bulanList[(int)$penggajian->bulan] ?? 
     <div class="form-card">
         <div class="flex items-center justify-between border-b border-[#edf1e8] pb-4 mb-4">
             <h2 class="text-[13px] font-bold text-ink uppercase tracking-wider font-display">Data Karyawan & Periode</h2>
-            <span class="status-badge">
-                <span class="status-check">✓</span>
-                {{ \Carbon\Carbon::parse($penggajian->tanggal_gaji)->translatedFormat('d F Y') }}
-            </span>
+            <div class="flex items-center gap-2">
+                @if(($penggajian->status_approval ?? 'pending') === 'approved')
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
+                        ✓ Disetujui Owner
+                    </span>
+                @else
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                        ⏳ Menunggu Approval Owner
+                    </span>
+                @endif
+                <span class="status-badge">
+                    <span class="status-check">✓</span>
+                    {{ \Carbon\Carbon::parse($penggajian->tanggal_gaji)->translatedFormat('d F Y') }}
+                </span>
+            </div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-[12px]">
             <div>

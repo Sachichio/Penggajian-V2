@@ -86,4 +86,75 @@ class LaporanController extends Controller
             '.pdf'
         );
     }
+
+    /**
+     * Export laporan penggajian per periode ke CSV (Excel Compatible).
+     */
+    public function exportCsv($bulan, $tahun)
+    {
+        $laporans = Penggajian::with([
+                'karyawan.jabatan',
+                'potongans',
+            ])
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->orderBy('id')
+            ->get();
+
+        $filename = 'Laporan-Penggajian-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . $tahun . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $callback = function () use ($laporans) {
+            $file = fopen('php://output', 'w');
+            
+            // UTF-8 BOM untuk kompatibilitas Excel
+            fputs($file, "\xEF\xBB\xBF");
+
+            // Header Kolom
+            fputcsv($file, [
+                'No',
+                'Nama Karyawan',
+                'NIK',
+                'Jabatan',
+                'Periode Bulan',
+                'Tahun',
+                'Gaji Pokok',
+                'Tunjangan',
+                'Total Lembur',
+                'Total Pendapatan (Gross)',
+                'Total Potongan',
+                'Take Home Pay (Net)',
+                'Tanggal Pembayaran'
+            ]);
+
+            foreach ($laporans as $index => $row) {
+                fputcsv($file, [
+                    $index + 1,
+                    $row->karyawan->nama ?? '-',
+                    $row->karyawan->nik ?? '-',
+                    $row->karyawan->jabatan->nama_jabatan ?? '-',
+                    $row->bulan,
+                    $row->tahun,
+                    $row->gaji_pokok,
+                    $row->tunjangan,
+                    $row->total_lembur,
+                    $row->total_pendapatan,
+                    $row->total_potongan,
+                    $row->thp,
+                    $row->tanggal_gaji,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

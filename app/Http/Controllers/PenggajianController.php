@@ -270,4 +270,16 @@ class PenggajianController extends Controller
             ->route('penggajian.index')
             ->with('success', 'Data penggajian berhasil dihapus.');
     }
+
+    /**
+     * Otorisasi / Approval Penggajian oleh Owner
+     */
+    public function approvePayroll($id)
+    {
+        $penggajian = Penggajian::with('karyawan')->findOrFail($id);
+        $penggajian->status_approval = 'Disetujui';
+        $penggajian->save();
+
+        return back()->with('success', "Penggajian atas nama {$penggajian->karyawan->nama} periode {$penggajian->bulan} {$penggajian->tahun} BERHASIL DISETUJUI & DITERBITKAN.");
+    }
 }

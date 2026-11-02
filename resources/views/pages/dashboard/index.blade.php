@@ -107,33 +107,157 @@
         </div>
     </div>
 
-    {{-- Card 4: Total Pengguna --}}
+    {{-- Card 4: Total Pengeluaran Payroll (Executive BI) --}}
     <div class="stat-card">
         <div class="stat-top">
-            <span>Total Pengguna</span>
+            <span>Total Biaya Payroll</span>
             <span class="stat-icon peach">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M16 3a4 4 0 0 1 0 8" />
-                    <circle cx="9" cy="7" r="4" />
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
             </span>
         </div>
-        <div class="stat-value">
-            {{ $totalUser }}
-            <span>pengguna</span>
-            <svg class="sparkline spark-3" width="92" height="36" viewBox="0 0 92 36" aria-hidden="true">
-                <path d="M2 30 14 23 25 26 37 14 49 19 61 10 72 12 90 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
-            </svg>
+        <div class="stat-value text-xl font-bold">
+            Rp {{ number_format($totalPayrollCost, 0, ',', '.') }}
         </div>
         <div class="stat-bottom">
             <span class="stat-indicator">
                 <span class="small-dot"></span>
-                2 akun aktif
+                Rata-rata: Rp {{ number_format($avgSalary, 0, ',', '.') }}
             </span>
-            <span>mengelola workspace</span>
+            <span>/ karyawan</span>
         </div>
     </div>
 </section>
+
+{{-- ========================================================= --}}
+{{-- BUSINESS INTELLIGENCE & ANALYTICS CHARTS (FASE 3)         --}}
+{{-- ========================================================= --}}
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    {{-- Chart 1: Trend Payroll Bulanan (2 Col) --}}
+    <div class="lg:col-span-2 bg-white border border-[#e5eae3] rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-sm font-bold text-neutral-900 font-manrope">Tren Pengeluaran Payroll</h3>
+                <p class="text-xs text-neutral-400">Total belanja gaji bersih per periode bulan.</p>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-semibold bg-forest-50 text-forest-700 rounded-lg border border-forest-100">
+                Visualisasi Keuangan
+            </span>
+        </div>
+        <div class="h-64">
+            <canvas id="payrollTrendChart"></canvas>
+        </div>
+    </div>
+
+    {{-- Chart 2: Proporsi Biaya per Jabatan (1 Col) --}}
+    <div class="bg-white border border-[#e5eae3] rounded-xl p-5 shadow-sm">
+        <div class="mb-4">
+            <h3 class="text-sm font-bold text-neutral-900 font-manrope">Proporsi Biaya Jabatan</h3>
+            <p class="text-xs text-neutral-400">Distribusi pengeluaran gaji per posisi/jabatan.</p>
+        </div>
+        <div class="h-64 flex items-center justify-center">
+            <canvas id="departmentChart"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- Include Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Line Chart: Payroll Trend
+        const ctxTrend = document.getElementById('payrollTrendChart').getContext('2d');
+        new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: {!! json_encode($trendLabels) !!},
+                datasets: [{
+                    label: 'Total Pengeluaran (Rp)',
+                    data: {!! json_encode($trendValues) !!},
+                    borderColor: '#326447',
+                    backgroundColor: 'rgba(50, 100, 71, 0.08)',
+                    borderWidth: 2.5,
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: '#326447',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + (value / 1000000).toFixed(0) + ' Jt';
+                            },
+                            font: { size: 10 }
+                        },
+                        grid: { color: '#f3f4f6' }
+                    },
+                    x: {
+                        ticks: { font: { size: 10 } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Donut Chart: Proporsi Biaya Jabatan
+        const ctxDept = document.getElementById('departmentChart').getContext('2d');
+        new Chart(ctxDept, {
+            type: 'doughnut',
+            data: {
+                labels: {!! json_encode($jabatanLabels) !!},
+                datasets: [{
+                    data: {!! json_encode($jabatanValues) !!},
+                    backgroundColor: [
+                        '#326447',
+                        '#4f8054',
+                        '#6986ab',
+                        '#9581b7',
+                        '#be9270',
+                        '#b19b5c'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { boxWidth: 10, font: { size: 10 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': Rp ' + context.parsed.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    });
+</script>
 
 {{-- ========================================================= --}}
 {{-- 3. TABEL PENGGAJIAN TERBARU (PERSIS GAMBAR 2)             --}}

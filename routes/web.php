@@ -16,6 +16,17 @@ use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\SlipGajiController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PotonganController;
+use App\Http\Controllers\PresensiController;
+
+/*
+|--------------------------------------------------------------------------
+| TERMINAL PRESENSI KIOSK (PUBLIK MANDIRI)
+|--------------------------------------------------------------------------
+*/
+Route::get('/absen-masuk', [PresensiController::class, 'kiosk'])->name('presensi.kiosk');
+Route::post('/absen-masuk/checkin', [PresensiController::class, 'checkIn'])->name('presensi.checkin');
+Route::post('/absen-masuk/checkout', [PresensiController::class, 'checkOut'])->name('presensi.checkout');
+Route::post('/absen-masuk/izin', [PresensiController::class, 'ajukanIzin'])->name('presensi.izin');
 
 /*
 |--------------------------------------------------------------------------
@@ -162,7 +173,31 @@ Route::middleware(['auth', 'role:admin,owner'])->group(function () {
 
             Route::get('/{bulan}/{tahun}/pdf', [LaporanController::class, 'exportPdf'])
                 ->name('export');
+
+            Route::get('/{bulan}/{tahun}/csv', [LaporanController::class, 'exportCsv'])
+                ->name('exportCsv');
         });
+
+    /**
+     * Presensi & Cuti
+     */
+    Route::get('/presensi', [PresensiController::class, 'index'])
+        ->name('presensi.index');
+
+    Route::post('/presensi/pengajuan/{id}/approve', [PresensiController::class, 'approveIzin'])
+        ->name('presensi.approve');
+
+    Route::post('/presensi/pengajuan/{id}/reject', [PresensiController::class, 'rejectIzin'])
+        ->name('presensi.reject');
+
+    Route::get('/api/karyawan/{id}/attendance-summary/{bulan}/{tahun}', [PresensiController::class, 'getAttendanceSummary'])
+        ->name('api.karyawan.attendance');
+
+    /**
+     * Otorisasi / Approval Payroll
+     */
+    Route::post('/penggajian/{id}/approve', [PenggajianController::class, 'approvePayroll'])
+        ->name('penggajian.approve');
 });
 
 /**
