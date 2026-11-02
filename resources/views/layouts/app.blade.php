@@ -74,16 +74,20 @@
         .active-dot { margin-left: auto; background: #42724b; width: 6px; height: 6px; border-radius: 50%; }
         .other-caption { padding-top: 18px; }
 
-        .sidebar-bottom { margin-top: auto; padding-top: 20px; flex-shrink: 0; }
+        .sidebar-bottom { margin-top: auto; padding-top: 18px; flex-shrink: 0; }
 
-        .profile { display: flex; gap: 10px; align-items: center; padding: 16px 3px; width: 100%; border-top: 1px solid #edf0eb; text-align: left; background: none; border-left: none; border-right: none; border-bottom: none; }
-        .profile strong { display: block; font-size: 12px; font-weight: 650; color: #253127; }
-        .profile small { color: #929a93; font-size: 10px; display: block; margin-top: 2px; }
-        .profile > svg { margin-left: auto; margin-right: 7px; color: #939b94; }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 650; flex-shrink: 0; }
+        .profile-card { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid #e7ebe7; border-radius: 9px; background: #fbfdfa; margin-bottom: 12px; transition: border-color .15s; }
+        .profile-card:hover { border-color: #d8e2d4; }
+        .profile-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .profile-meta { min-width: 0; }
+        .profile-meta strong { display: block; font-size: 11.5px; font-weight: 650; color: #253127; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+        .profile-meta small { color: #929a93; font-size: 9.5px; display: block; margin-top: 2px; line-height: 1.2; }
+        .logout-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 7px; border: 1px solid transparent; background: transparent; color: #879188; transition: all .18s; cursor: pointer; flex-shrink: 0; }
+        .logout-icon-btn:hover { background: #fdf2f2; color: #dc2626; border-color: #fee2e2; }
+        .avatar { width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 650; flex-shrink: 0; }
         .admin-avatar { background: #e9eddc; color: #5d7450; position: relative; }
         .admin-avatar > span { width: 8px; height: 8px; background: #5a8a60; border: 2px solid white; border-radius: 50%; position: absolute; bottom: 0; right: 0; }
-        .sidebar-copyright { font-size: 8px; color: #a0a79f; padding: 0 2px 17px; }
+        .sidebar-copyright { font-size: 8px; color: #a0a79f; padding: 0 4px; }
 
         .main-shell { margin-left: 244px; min-height: 100vh; display: flex; flex-direction: column; }
         .topbar { height: 77px; border-bottom: 1px solid #e7ebe7; background: #fff; display: flex; justify-content: space-between; align-items: center; padding: 0 34px; }
@@ -343,37 +347,29 @@
             </a>
         </nav>
 
-        {{-- Navigasi Lainnya --}}
-        <div class="nav-caption other-caption">LAINNYA</div>
-        <form action="{{ route('logout') }}" method="POST" class="w-full">
-            @csrf
-            <button type="submit" class="nav-item text-red-600 hover:bg-red-50 hover:text-red-700 w-full text-left" title="Keluar dari sesi akun">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m6 5 5 4-5 4m-7-4h12" />
-                </svg>
-                <span>Logout</span>
-            </button>
-        </form>
-
-        {{-- Bottom Sidebar --}}
+        {{-- Bottom Sidebar: Unified Profile Card with Logout --}}
         <div class="sidebar-bottom">
-            {{-- User Profile Card --}}
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="profile" title="Klik untuk keluar">
+            <div class="profile-card">
+                <div class="profile-info">
                     <span class="avatar admin-avatar">
                         {{ strtoupper(substr(auth()->user()->name ?? 'AD', 0, 2)) }}
                         <span></span>
                     </span>
-                    <span>
+                    <div class="profile-meta">
                         <strong>{{ auth()->user()->name ?? 'Admin' }}</strong>
                         <small>{{ ucfirst(auth()->user()->role ?? 'Administrator') }}</small>
-                    </span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m6 5 5 4-5 4m-7-4h12" />
-                    </svg>
-                </button>
-            </form>
+                    </div>
+                </div>
+
+                <form action="{{ route('logout') }}" method="POST" class="m-0">
+                    @csrf
+                    <button type="submit" class="logout-icon-btn" title="Keluar dari akun">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m6 5 5 4-5 4m-7-4h12" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
 
             <p class="sidebar-copyright">© 2026 Gajiku. All rights reserved.</p>
         </div>

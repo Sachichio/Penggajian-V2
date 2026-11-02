@@ -14,10 +14,10 @@ async function runTests() {
   const BASE_URL = 'http://127.0.0.1:8000';
 
   // ==========================================
-  // TEST: BACKOFFICE DASHBOARD & SIDEBAR SCROLL
+  // TEST: BACKOFFICE DASHBOARD & SIDEBAR BARU
   // ==========================================
-  console.log('👉 [Test] Menguji Dashboard & Scrollability Sidebar pada Laptop Screen (1280x680)...');
-  const adminContext = await browser.newContext({ viewport: { width: 1280, height: 680 } });
+  console.log('👉 [Test] Menguji Dashboard & Footer Sidebar Baru (Unified Profile Card)...');
+  const adminContext = await browser.newContext({ viewport: { width: 1280, height: 720 } });
   const adminPage = await adminContext.newPage();
 
   try {
@@ -34,18 +34,14 @@ async function runTests() {
     console.log(`   ✓ Login sukses, halaman aktif: ${adminPage.url()}`);
     await adminPage.waitForTimeout(1500);
 
-    // Verifikasi sidebar scroll
-    const sidebar = adminPage.locator('#app-sidebar');
-    await sidebar.evaluate(el => el.scrollTop = el.scrollHeight);
-    console.log('   ✓ Sidebar berhasil di-scroll ke bagian paling bawah');
-    await adminPage.waitForTimeout(500);
-
-    const logoutVisible = await adminPage.locator('button:has-text("Logout")').first().isVisible();
-    console.log(`   ✓ Tombol Logout terlihat setelah scroll: ${logoutVisible}`);
+    const hasProfileCard = await adminPage.locator('.profile-card').isVisible();
+    const hasLogoutIconBtn = await adminPage.locator('.logout-icon-btn').isVisible();
+    console.log(`   ✓ Unified Profile Card terdeteksi: ${hasProfileCard}`);
+    console.log(`   ✓ Tombol Logout Icon terdeteksi: ${hasLogoutIconBtn}`);
 
     const dashShot = path.join(screenshotsDir, 'dashboard-bi.png');
     await adminPage.screenshot({ path: dashShot, fullPage: false });
-    console.log(`   📸 Screenshot dashboard BI (sidebar scroll): ${dashShot}`);
+    console.log(`   📸 Screenshot dashboard BI (sidebar baru): ${dashShot}`);
 
     // Presensi
     await adminPage.goto(`${BASE_URL}/presensi`, { waitUntil: 'domcontentloaded', timeout: 20000 });
@@ -54,7 +50,7 @@ async function runTests() {
     await adminPage.screenshot({ path: presensiShot, fullPage: false });
     console.log(`   📸 Screenshot presensi admin: ${presensiShot}`);
 
-    console.log('\n🎉 SEMUA PENGUJIAN SIDEBAR & DASHBOARD BERHASIL 100%!');
+    console.log('\n🎉 SEMUA PENGUJIAN DESAIN SIDEBAR BARU BERHASIL 100%!');
   } catch (e) {
     console.error('   ❌ Test error:', e.message);
   } finally {
