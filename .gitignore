@@ -29,3 +29,8 @@ arsitektur-sistem.md
 workflow-agen.md
 dokumentasi*.md
 
+# Playwright Test Artifacts
+/tests/e2e/screenshots
+/playwright-report
+/test-results
+

@@ -53,11 +53,11 @@ class DashboardController extends Controller
          * BUSINESS INTELLIGENCE METRICS & CHARTS (FASE 3)
          */
         // 1. Total Biaya Payroll Keseluruhan & Rata-rata Gaji
-        $totalPayrollCost = Penggajian::sum('total_gaji');
+        $totalPayrollCost = Penggajian::sum('thp');
         $avgSalary = $countPenggajian > 0 ? ($totalPayrollCost / $countPenggajian) : 0;
 
         // 2. Data Tren Pengeluaran Payroll (6 Periode Terakhir atau berdasarkan Data)
-        $trendData = Penggajian::selectRaw('bulan, tahun, SUM(total_gaji) as total')
+        $trendData = Penggajian::selectRaw('bulan, tahun, SUM(thp) as total')
             ->groupBy('bulan', 'tahun')
             ->orderBy('tahun', 'asc')
             ->take(6)
@@ -80,7 +80,7 @@ class DashboardController extends Controller
         $jabatanDistribution = Jabatan::with('karyawans.penggajians')->get()->map(function ($jabatan) {
             $totalGajiJabatan = 0;
             foreach ($jabatan->karyawans as $k) {
-                $totalGajiJabatan += $k->penggajians->sum('total_gaji');
+                $totalGajiJabatan += $k->penggajians->sum('thp');
             }
             return [
                 'nama' => $jabatan->nama_jabatan,
