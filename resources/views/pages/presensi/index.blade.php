@@ -54,18 +54,36 @@
 
     <!-- Section 1: Pengajuan Izin Menunggu Persetujuan -->
     <div class="bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden">
-        <div class="p-6 border-b border-neutral-100 flex items-center justify-between">
+        <div class="p-6 border-b border-neutral-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h2 class="text-base font-bold text-neutral-900 font-manrope">Pengajuan Izin / Cuti Menunggu Approval</h2>
-                <p class="text-xs text-neutral-500">Permohonan izin atau cuti yang diajukan oleh karyawan melalui kiosk.</p>
+                <div class="flex items-center gap-2.5">
+                    <h2 class="text-base font-bold text-neutral-900 font-manrope">Pengajuan Izin / Cuti Menunggu Approval</h2>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                        {{ $pendingApprovalCount ?? 0 }} Permohonan Menunggu
+                    </span>
+                </div>
+                <p class="text-xs text-neutral-500 mt-0.5">Permohonan izin atau cuti yang diajukan oleh karyawan melalui kiosk.</p>
             </div>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
-                {{ $pendingApprovalCount ?? 0 }} Permohonan Menunggu
-            </span>
+            
+            <!-- Toolbar Filter Permohonan Izin -->
+            <div class="flex flex-wrap items-center gap-2.5">
+                <div class="relative">
+                    <input type="text" id="izin-search-input" oninput="filterIzinTable()" placeholder="Cari nama karyawan..." class="rounded-xl border border-neutral-300 pl-8 pr-3 py-1.5 text-xs focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest w-44">
+                    <svg class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <select id="izin-kategori-filter" onchange="filterIzinTable()" class="rounded-xl border border-neutral-300 px-3 py-1.5 text-xs text-neutral-700 focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest bg-white">
+                    <option value="">Semua Kategori</option>
+                    <option value="Cuti">Cuti Tahunan</option>
+                    <option value="Sakit">Sakit</option>
+                    <option value="Izin">Izin</option>
+                </select>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-sm">
+            <table id="pengajuan-izin-table" class="w-full text-left border-collapse text-sm">
                 <thead>
                     <tr class="border-b border-neutral-100 bg-neutral-50/50 text-xs font-semibold uppercase tracking-wider text-neutral-500">
                         <th class="py-3 px-6">Karyawan</th>
@@ -138,6 +156,11 @@
                             </td>
                         </tr>
                     @endforelse
+                    <tr id="izin-empty-row" style="display: none;">
+                        <td colspan="6" class="py-8 text-center text-sm text-neutral-400">
+                            Tidak ada pengajuan izin yang sesuai dengan kriteria filter.
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -248,6 +271,35 @@
 </div>
 
 <script>
+    function filterIzinTable() {
+        const search = (document.getElementById('izin-search-input').value || '').toLowerCase();
+        const kategori = (document.getElementById('izin-kategori-filter').value || '').toLowerCase();
+        const table = document.getElementById('pengajuan-izin-table');
+        if (!table) return;
+        const rows = table.querySelectorAll('tbody tr:not(#izin-empty-row)');
+        const emptyRow = document.getElementById('izin-empty-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const kategoriCell = row.children[1] ? row.children[1].textContent.toLowerCase() : '';
+
+            const matchesSearch = text.includes(search);
+            const matchesKategori = kategori === '' || kategoriCell.includes(kategori);
+
+            if (matchesSearch && matchesKategori) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyRow) {
+            emptyRow.style.display = visibleCount === 0 && rows.length > 0 ? '' : 'none';
+        }
+    }
+
     function filterPresensiTable() {
         const search = (document.getElementById('presensi-search-input').value || '').toLowerCase();
         const table = document.getElementById('presensi-main-table');

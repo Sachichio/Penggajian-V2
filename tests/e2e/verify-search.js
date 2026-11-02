@@ -74,9 +74,14 @@ check('Laporan: search tanpa hasil', (await visibleRows(page, '#laporan-main-tab
 
 // Presensi
 await page.goto(`${BASE}/presensi`, { waitUntil: 'domcontentloaded' });
-check('Presensi: input search ada', await page.locator('#presensi-search-input').isVisible());
+check('Presensi: input search log ada', await page.locator('#presensi-search-input').isVisible());
+check('Presensi: input search izin ada', await page.locator('#izin-search-input').isVisible());
+check('Presensi: filter kategori izin ada', await page.locator('#izin-kategori-filter').isVisible());
+await page.selectOption('#izin-kategori-filter', 'Cuti');
+await page.fill('#izin-search-input', 'zzzzzz');
+check('Presensi: search izin jalan', jsErrors.length === 0);
 await page.fill('#presensi-search-input', 'zzzzzz');
-check('Presensi: search jalan tanpa error JS', jsErrors.length === 0);
+check('Presensi: search log jalan tanpa error JS', jsErrors.length === 0);
 
 check('Tidak ada error JavaScript di semua halaman', jsErrors.length === 0, jsErrors.join(' | '));
 
