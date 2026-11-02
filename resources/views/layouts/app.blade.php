@@ -400,7 +400,7 @@
                         <rect x="3" y="5" width="18" height="16" rx="2" />
                         <path d="M16 3v4M8 3v4M3 11h18m-13 4h2m4 0h2" />
                     </svg>
-                    Jumat, 31 Juli 2026
+                    {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}
                 </span>
                 <span class="topbar-divider"></span>
                 <div class="notification-wrap">

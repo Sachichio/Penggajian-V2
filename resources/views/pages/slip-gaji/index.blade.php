@@ -37,8 +37,37 @@ $palette = [
         </div>
     </div>
 
+    {{-- Table Toolbar Filter --}}
+    <div class="table-toolbar">
+        <label class="search-field">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10.8" cy="10.8" r="7.3" />
+                <path d="m16 16 5 5" />
+            </svg>
+            <input id="slip-search-input" onkeyup="filterSlipTable()" placeholder="Cari nama karyawan atau NIK..." />
+        </label>
+
+        <div class="table-filters">
+            <select id="slip-month-filter" onchange="filterSlipTable()">
+                <option value="">Semua Bulan</option>
+                <option value="Januari">Januari</option>
+                <option value="Februari">Februari</option>
+                <option value="Maret">Maret</option>
+                <option value="April">April</option>
+                <option value="Mei">Mei</option>
+                <option value="Juni">Juni</option>
+                <option value="Juli">Juli</option>
+                <option value="Agustus">Agustus</option>
+                <option value="September">September</option>
+                <option value="Oktober">Oktober</option>
+                <option value="November">November</option>
+                <option value="Desember">Desember</option>
+            </select>
+        </div>
+    </div>
+
     <div class="table-scroll">
-        <table>
+        <table id="slip-main-table">
             <thead>
                 <tr>
                     <th style="width: 45px; text-align: center;">No</th>
@@ -117,13 +146,51 @@ $palette = [
                     </td>
                 </tr>
                 @endforelse
+                <tr id="slip-empty-row" style="display: none;">
+                    <td colspan="7" class="py-12 text-center text-[#8e988f]">
+                        Tidak ada dokumen slip gaji yang sesuai dengan pencarian atau filter bulan.
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <div class="table-footer">
-        <strong>Total {{ count($slipGajis) }} slip terdata</strong>
+        <strong id="slip-count-info">Total {{ count($slipGajis) }} slip terdata</strong>
         <span>Dokumen terverifikasi sistem</span>
     </div>
 </div>
+
+<script>
+    function filterSlipTable() {
+        const search = (document.getElementById('slip-search-input').value || '').toLowerCase();
+        const month = (document.getElementById('slip-month-filter').value || '').toLowerCase();
+        const table = document.getElementById('slip-main-table');
+        const rows = table.querySelectorAll('tbody tr:not(#slip-empty-row)');
+        const emptyRow = document.getElementById('slip-empty-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const matchesSearch = text.includes(search);
+            const matchesMonth = month === '' || text.includes(month);
+
+            if (matchesSearch && matchesMonth) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyRow) {
+            emptyRow.style.display = visibleCount === 0 && rows.length > 0 ? '' : 'none';
+        }
+
+        const countInfo = document.getElementById('slip-count-info');
+        if (countInfo) {
+            countInfo.textContent = `Menampilkan ${visibleCount} dari {{ count($slipGajis) }} slip gaji`;
+        }
+    }
+</script>
 @endsection

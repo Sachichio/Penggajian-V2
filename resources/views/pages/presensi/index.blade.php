@@ -157,17 +157,25 @@
                 <p class="text-xs text-neutral-500">Rekap kehadiran, waktu check-in, check-out, serta keterlambatan.</p>
             </div>
             
-            <!-- Filter Tanggal -->
-            <form method="GET" action="{{ route('presensi.index') }}" class="flex items-center gap-2">
-                <input type="date" name="tanggal" value="{{ $tanggalPilih }}" class="rounded-xl border border-neutral-300 px-3 py-1.5 text-sm focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest">
-                <button type="submit" class="rounded-xl bg-neutral-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-neutral-800 transition-all">
-                    Filter
-                </button>
-            </form>
+            <!-- Filter Tanggal & Pencarian -->
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="relative">
+                    <input type="text" id="presensi-search-input" onkeyup="filterPresensiTable()" placeholder="Cari nama atau NIK..." class="rounded-xl border border-neutral-300 pl-8 pr-3 py-1.5 text-xs focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest w-48">
+                    <svg class="w-3.5 h-3.5 text-neutral-400 absolute left-2.5 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <form method="GET" action="{{ route('presensi.index') }}" class="flex items-center gap-2">
+                    <input type="date" name="tanggal" value="{{ $tanggalPilih }}" class="rounded-xl border border-neutral-300 px-3 py-1.5 text-xs focus:border-forest focus:outline-none focus:ring-1 focus:ring-forest">
+                    <button type="submit" class="rounded-xl bg-neutral-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-neutral-800 transition-all">
+                        Filter
+                    </button>
+                </form>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-sm">
+            <table id="presensi-main-table" class="w-full text-left border-collapse text-sm">
                 <thead>
                     <tr class="border-b border-neutral-100 bg-neutral-50/50 text-xs font-semibold uppercase tracking-wider text-neutral-500">
                         <th class="py-3 px-6">Karyawan</th>
@@ -228,9 +236,38 @@
                             </td>
                         </tr>
                     @endforelse
+                    <tr id="presensi-empty-row" style="display: none;">
+                        <td colspan="7" class="py-8 text-center text-sm text-neutral-400">
+                            Tidak ada karyawan yang sesuai dengan kata kunci pencarian.
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script>
+    function filterPresensiTable() {
+        const search = (document.getElementById('presensi-search-input').value || '').toLowerCase();
+        const table = document.getElementById('presensi-main-table');
+        const rows = table.querySelectorAll('tbody tr:not(#presensi-empty-row)');
+        const emptyRow = document.getElementById('presensi-empty-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if (text.includes(search)) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyRow) {
+            emptyRow.style.display = visibleCount === 0 && rows.length > 0 ? '' : 'none';
+        }
+    }
+</script>
 @endsection

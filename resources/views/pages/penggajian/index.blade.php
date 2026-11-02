@@ -38,8 +38,37 @@
         </div>
     </div>
 
+    {{-- Table Toolbar Filter --}}
+    <div class="table-toolbar">
+        <label class="search-field">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10.8" cy="10.8" r="7.3" />
+                <path d="m16 16 5 5" />
+            </svg>
+            <input id="penggajian-search-input" onkeyup="filterPenggajianTable()" placeholder="Cari nama karyawan atau NIK..." />
+        </label>
+
+        <div class="table-filters">
+            <select id="penggajian-month-filter" onchange="filterPenggajianTable()">
+                <option value="">Semua Bulan</option>
+                <option value="Januari">Januari</option>
+                <option value="Februari">Februari</option>
+                <option value="Maret">Maret</option>
+                <option value="April">April</option>
+                <option value="Mei">Mei</option>
+                <option value="Juni">Juni</option>
+                <option value="Juli">Juli</option>
+                <option value="Agustus">Agustus</option>
+                <option value="September">September</option>
+                <option value="Oktober">Oktober</option>
+                <option value="November">November</option>
+                <option value="Desember">Desember</option>
+            </select>
+        </div>
+    </div>
+
     <div class="table-scroll">
-        <table>
+        <table id="penggajian-main-table">
             <thead>
                 <tr>
                     <th style="width: 45px; text-align: center;">No</th>
@@ -143,13 +172,51 @@
                     </td>
                 </tr>
                 @endforelse
+                <tr id="penggajian-empty-row" style="display: none;">
+                    <td colspan="7" class="py-12 text-center text-[#8e988f]">
+                        Tidak ada transaksi penggajian yang sesuai dengan pencarian atau filter bulan.
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <div class="table-footer">
-        <strong>Total {{ count($penggajians) }} transaksi terdata</strong>
+        <strong id="penggajian-count-info">Total {{ count($penggajians) }} transaksi terdata</strong>
         <span>Sistem penggajian digital</span>
     </div>
 </div>
+
+<script>
+    function filterPenggajianTable() {
+        const search = (document.getElementById('penggajian-search-input').value || '').toLowerCase();
+        const month = (document.getElementById('penggajian-month-filter').value || '').toLowerCase();
+        const table = document.getElementById('penggajian-main-table');
+        const rows = table.querySelectorAll('tbody tr:not(#penggajian-empty-row)');
+        const emptyRow = document.getElementById('penggajian-empty-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const matchesSearch = text.includes(search);
+            const matchesMonth = month === '' || text.includes(month);
+
+            if (matchesSearch && matchesMonth) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyRow) {
+            emptyRow.style.display = visibleCount === 0 && rows.length > 0 ? '' : 'none';
+        }
+
+        const countInfo = document.getElementById('penggajian-count-info');
+        if (countInfo) {
+            countInfo.textContent = `Menampilkan ${visibleCount} dari {{ count($penggajians) }} transaksi`;
+        }
+    }
+</script>
 @endsection

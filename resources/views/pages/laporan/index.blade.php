@@ -31,8 +31,19 @@ $namaBulan = [
         </div>
     </div>
 
+    {{-- Table Toolbar Filter --}}
+    <div class="table-toolbar">
+        <label class="search-field">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10.8" cy="10.8" r="7.3" />
+                <path d="m16 16 5 5" />
+            </svg>
+            <input id="laporan-search-input" onkeyup="filterLaporanTable()" placeholder="Cari periode bulan atau tahun..." />
+        </label>
+    </div>
+
     <div class="table-scroll">
-        <table>
+        <table id="laporan-main-table">
             <thead>
                 <tr>
                     <th style="width: 45px; text-align: center;">No</th>
@@ -115,13 +126,47 @@ $namaBulan = [
                     </td>
                 </tr>
                 @endforelse
+                <tr id="laporan-empty-row" style="display: none;">
+                    <td colspan="7" class="py-12 text-center text-[#8e988f]">
+                        Tidak ada histori laporan yang sesuai dengan pencarian.
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <div class="table-footer">
-        <strong>Total {{ count($laporans ?? []) }} periode tercatat</strong>
+        <strong id="laporan-count-info">Total {{ count($laporans ?? []) }} periode tercatat</strong>
         <span>Audit keuangan resmi</span>
     </div>
 </div>
+
+<script>
+    function filterLaporanTable() {
+        const search = (document.getElementById('laporan-search-input').value || '').toLowerCase();
+        const table = document.getElementById('laporan-main-table');
+        const rows = table.querySelectorAll('tbody tr:not(#laporan-empty-row)');
+        const emptyRow = document.getElementById('laporan-empty-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if (text.includes(search)) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyRow) {
+            emptyRow.style.display = visibleCount === 0 && rows.length > 0 ? '' : 'none';
+        }
+
+        const countInfo = document.getElementById('laporan-count-info');
+        if (countInfo) {
+            countInfo.textContent = `Menampilkan ${visibleCount} dari {{ count($laporans ?? []) }} periode`;
+        }
+    }
+</script>
 @endsection

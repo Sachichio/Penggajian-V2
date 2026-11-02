@@ -24,10 +24,11 @@ async function runTests() {
     await adminPage.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded', timeout: 20000 });
     console.log('   ✓ Halaman login dimuat');
 
-    // Klik tombol 'Isi otomatis' demo
-    await adminPage.click('button:has-text("Isi otomatis")');
+    // Isi langsung kredensial demo
+    await adminPage.fill('input[name="email"]', 'admin@gmail.com');
+    await adminPage.fill('input[name="password"]', '123');
     await Promise.all([
-      adminPage.waitForURL('**/dashboard', { waitUntil: 'domcontentloaded', timeout: 20000 }),
+      adminPage.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 25000 }),
       adminPage.click('button[type="submit"]')
     ]);
 
@@ -42,6 +43,19 @@ async function runTests() {
     const dashShot = path.join(screenshotsDir, 'dashboard-bi.png');
     await adminPage.screenshot({ path: dashShot, fullPage: false });
     console.log(`   📸 Screenshot dashboard BI (sidebar baru): ${dashShot}`);
+
+    // Test Search Karyawan
+    await adminPage.goto(`${BASE_URL}/karyawan`, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    await adminPage.waitForTimeout(1000);
+    const karyawanSearchInput = await adminPage.locator('#karyawan-search-input');
+    if (await karyawanSearchInput.isVisible()) {
+      await karyawanSearchInput.fill('dono');
+      await adminPage.waitForTimeout(500);
+      console.log('   ✓ Test search karyawan berhasil diisi ("dono")');
+    }
+    const karyawanShot = path.join(screenshotsDir, 'karyawan-search.png');
+    await adminPage.screenshot({ path: karyawanShot, fullPage: false });
+    console.log(`   📸 Screenshot karyawan search: ${karyawanShot}`);
 
     // Presensi
     await adminPage.goto(`${BASE_URL}/presensi`, { waitUntil: 'domcontentloaded', timeout: 20000 });

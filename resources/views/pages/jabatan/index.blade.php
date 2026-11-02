@@ -38,8 +38,19 @@
         </div>
     </div>
 
+    {{-- Table Toolbar Filter --}}
+    <div class="table-toolbar">
+        <label class="search-field">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10.8" cy="10.8" r="7.3" />
+                <path d="m16 16 5 5" />
+            </svg>
+            <input id="jabatan-search-input" onkeyup="filterJabatanTable()" placeholder="Cari nama jabatan..." />
+        </label>
+    </div>
+
     <div class="table-scroll">
-        <table>
+        <table id="jabatan-main-table">
             <thead>
                 <tr>
                     <th style="width: 50px; text-align: center;">No</th>
@@ -107,13 +118,47 @@
                     </td>
                 </tr>
                 @endforelse
+                <tr id="jabatan-empty-row" style="display: none;">
+                    <td colspan="6" class="py-12 text-center text-[#8e988f]">
+                        Tidak ada data jabatan yang sesuai dengan pencarian.
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     <div class="table-footer">
-        <strong>Total {{ count($jabatans) }} jabatan terdaftar</strong>
+        <strong id="jabatan-count-info">Total {{ count($jabatans) }} jabatan terdaftar</strong>
         <span>Kompensasi resmi perusahaan</span>
     </div>
 </div>
+
+<script>
+    function filterJabatanTable() {
+        const search = (document.getElementById('jabatan-search-input').value || '').toLowerCase();
+        const table = document.getElementById('jabatan-main-table');
+        const rows = table.querySelectorAll('tbody tr:not(#jabatan-empty-row)');
+        const emptyRow = document.getElementById('jabatan-empty-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if (text.includes(search)) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyRow) {
+            emptyRow.style.display = visibleCount === 0 && rows.length > 0 ? '' : 'none';
+        }
+
+        const countInfo = document.getElementById('jabatan-count-info');
+        if (countInfo) {
+            countInfo.textContent = `Menampilkan ${visibleCount} dari {{ count($jabatans) }} jabatan`;
+        }
+    }
+</script>
 @endsection

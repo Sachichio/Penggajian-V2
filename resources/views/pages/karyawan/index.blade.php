@@ -48,9 +48,28 @@
         </div>
     </div>
 
+    {{-- Table Toolbar Filter --}}
+    <div class="table-toolbar">
+        <label class="search-field">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10.8" cy="10.8" r="7.3" />
+                <path d="m16 16 5 5" />
+            </svg>
+            <input id="karyawan-search-input" onkeyup="filterKaryawanTable()" placeholder="Cari nama atau NIK karyawan..." />
+        </label>
+
+        <div class="table-filters" style="display: flex; gap: 8px;">
+            <select id="karyawan-status-filter" onchange="filterKaryawanTable()">
+                <option value="">Semua Status</option>
+                <option value="Aktif">Aktif</option>
+                <option value="Nonaktif">Nonaktif</option>
+            </select>
+        </div>
+    </div>
+
     {{-- Table Scroll --}}
     <div class="table-scroll">
-        <table>
+        <table id="karyawan-main-table">
             <thead>
                 <tr>
                     <th style="width: 50px; text-align: center;">No</th>
@@ -146,14 +165,55 @@
                     </td>
                 </tr>
                 @endforelse
+                <tr id="karyawan-empty-row" style="display: none;">
+                    <td colspan="6" class="py-12 text-center text-[#8e988f]">
+                        Tidak ada data karyawan yang sesuai dengan filter pencarian.
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
     {{-- Table Footer --}}
     <div class="table-footer">
-        <strong>Total {{ count($karyawans) }} data terdaftar</strong>
-        <span>Menampilkan seluruh data karyawan</span>
+        <strong id="karyawan-count-info">Total {{ count($karyawans) }} data terdaftar</strong>
+        <span>Menampilkan data karyawan</span>
     </div>
 </div>
+
+<script>
+    function filterKaryawanTable() {
+        const search = (document.getElementById('karyawan-search-input').value || '').toLowerCase();
+        const status = (document.getElementById('karyawan-status-filter').value || '').toLowerCase();
+        const table = document.getElementById('karyawan-main-table');
+        const rows = table.querySelectorAll('tbody tr:not(#karyawan-empty-row)');
+        const emptyRow = document.getElementById('karyawan-empty-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const statusBadge = row.querySelector('.status-badge, .status-badge-rose');
+            const statusText = statusBadge ? statusBadge.textContent.toLowerCase() : '';
+
+            const matchesSearch = text.includes(search);
+            const matchesStatus = status === '' || statusText.includes(status);
+
+            if (matchesSearch && matchesStatus) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyRow) {
+            emptyRow.style.display = visibleCount === 0 && rows.length > 0 ? '' : 'none';
+        }
+
+        const countInfo = document.getElementById('karyawan-count-info');
+        if (countInfo) {
+            countInfo.textContent = `Menampilkan ${visibleCount} dari {{ count($karyawans) }} karyawan`;
+        }
+    }
+</script>
 @endsection

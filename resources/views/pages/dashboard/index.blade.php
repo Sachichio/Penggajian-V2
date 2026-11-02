@@ -290,7 +290,6 @@
                 <path d="m16 16 5 5" />
             </svg>
             <input id="payroll-search-input" onkeyup="filterTableRows()" placeholder="Cari nama karyawan..." />
-            <span>⌘K</span>
         </label>
 
         <div class="table-filters">
@@ -309,9 +308,6 @@
         <table id="payroll-main-table">
             <thead>
                 <tr>
-                    <th class="checkbox-cell">
-                        <input type="checkbox" aria-label="Pilih semua data" />
-                    </th>
                     <th>
                         Nama Karyawan
                         <svg class="inline-block ml-1 opacity-60" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -399,9 +395,6 @@
                         $tgl = \Carbon\Carbon::parse($item->tanggal_gaji)->translatedFormat('d F Y');
                     @endphp
                     <tr>
-                        <td class="checkbox-cell">
-                            <input type="checkbox" />
-                        </td>
                         <td>
                             <div class="employee-cell">
                                 <span class="avatar {{ $colorClass }}">{{ $init }}</span>
@@ -430,9 +423,6 @@
                 @else
                     @foreach($defaultRows as $row)
                     <tr>
-                        <td class="checkbox-cell">
-                            <input type="checkbox" />
-                        </td>
                         <td>
                             <div class="employee-cell">
                                 <span class="avatar {{ $row['color'] }}">{{ $row['initials'] }}</span>
