@@ -3,15 +3,15 @@
 @section('title', 'Masuk ke Akun — gajiku.')
 
 @section('content')
-<div class="min-h-screen bg-canvas font-sans text-ink">
-    <main class="grid min-h-screen grid-cols-1 lg:grid-cols-[1.06fr_0.94fr] xl:grid-cols-[1.08fr_0.92fr]">
+<div class="min-h-screen bg-canvas font-sans text-ink w-full max-w-full overflow-x-hidden">
+    <main class="grid min-h-screen grid-cols-1 lg:grid-cols-[1.06fr_0.94fr] xl:grid-cols-[1.08fr_0.92fr] w-full max-w-full overflow-x-hidden">
 
         {{-- ========================================================= --}}
         {{-- SISI KIRI: BRAND PANEL (PERSIS GAMBAR 3)                  --}}
         {{-- ========================================================= --}}
-        <section aria-label="Tentang gajiku" class="hero-surface relative hidden min-h-screen border-r border-[#e1ead8] lg:flex lg:flex-col">
+        <section aria-label="Tentang gajiku" class="hero-surface relative hidden min-h-screen border-r border-[#e1ead8] lg:flex lg:flex-col overflow-hidden">
             {{-- Background Decorative Accents --}}
-            <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+            <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
                 <div class="absolute -left-28 -top-28 h-80 w-80 rounded-full bg-[#dcead0]/70 blur-3xl"></div>
                 <div class="absolute -bottom-40 -right-28 h-[430px] w-[430px] rounded-full bg-[#d3e5c4]/60 blur-3xl"></div>
                 <div class="dot-field absolute inset-0 opacity-60 [mask-image:radial-gradient(75%_65%_at_72%_18%,black,transparent)]"></div>
@@ -33,10 +33,10 @@
                 <span class="absolute left-[12%] top-[62%] h-1.5 w-1.5 rounded-full bg-[#c0d4b1]"></span>
             </div>
 
-            <div class="relative z-10 mx-auto flex w-full max-w-[620px] flex-1 flex-col px-8 py-6 lg:px-9 xl:px-11 xl:py-8">
+            <div class="relative z-10 mx-auto flex w-full max-w-[620px] flex-1 flex-col px-6 py-4 lg:px-8 lg:py-4 xl:px-10 xl:py-6">
                 {{-- Top Brand Header --}}
                 <header class="flex items-center justify-between gap-4">
-                    <div class="inline-flex select-none items-center gap-2 font-display text-[28px] font-extrabold leading-none tracking-[-0.055em] text-ink">
+                    <div class="inline-flex select-none items-center gap-2 font-display text-[26px] xl:text-[28px] font-extrabold leading-none tracking-[-0.055em] text-ink">
                         <span class="inline-flex -rotate-[9deg] items-end gap-[3px] leading-none">
                             <span class="w-[7px] h-[17px] rounded-[2px] bg-[#336b4b]"></span>
                             <span class="w-[7px] h-[26px] rounded-[2px] bg-[#5b8760]"></span>
@@ -45,7 +45,7 @@
                         <span>gajiku<span class="text-forest">.</span></span>
                     </div>
 
-                    <span class="inline-flex items-center gap-2 rounded-full border border-[#dbe6d0] bg-white/60 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[#617a58] backdrop-blur">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-[#dbe6d0] bg-white/60 px-3 py-1 text-[8.5px] font-bold uppercase tracking-[0.16em] text-[#617a58] backdrop-blur">
                         <span class="relative flex h-1.5 w-1.5">
                             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#6d9563] opacity-60"></span>
                             <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-forest"></span>
@@ -55,44 +55,44 @@
                 </header>
 
                 {{-- Hero Copy & Visual --}}
-                <div class="my-auto w-full py-5 xl:py-6">
-                    <div class="inline-flex items-center gap-2 rounded-full border border-[#dae6cf] bg-white/70 px-3 py-1.5 text-[9.5px] font-bold uppercase tracking-[0.17em] text-[#68815d] shadow-[0_1px_2px_rgba(35,70,49,0.04)] backdrop-blur">
-                        <svg class="h-3.5 w-3.5 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="my-auto w-full py-2 xl:py-4">
+                    <div class="inline-flex items-center gap-2 rounded-full border border-[#dae6cf] bg-white/70 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.17em] text-[#68815d] shadow-[0_1px_2px_rgba(35,70,49,0.04)] backdrop-blur">
+                        <svg class="h-3 w-3 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                         </svg>
                         Penggajian yang lebih tenang
                     </div>
 
-                    <h2 class="mt-4 font-display text-[clamp(1.85rem,2.8vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.04em] text-[#27332c]">
+                    <h2 class="mt-2.5 xl:mt-3 font-display text-[clamp(1.65rem,2.4vw,2.5rem)] font-extrabold leading-[1.1] tracking-[-0.04em] text-[#27332c]">
                         Semua lebih mudah,<br />
                         dalam
                         <span class="relative inline-block whitespace-nowrap text-[#244734]">
                             satu tempat.
-                            <svg class="absolute -bottom-1.5 left-0 w-[102%] text-[#9fbd8d]" viewBox="0 0 230 10" fill="none" aria-hidden="true">
+                            <svg class="absolute -bottom-1 left-0 w-[102%] text-[#9fbd8d]" viewBox="0 0 230 10" fill="none" aria-hidden="true">
                                 <path d="M2.5 7.2C52 2.6 139 2.4 227.5 5.6" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" />
                             </svg>
                         </span>
                     </h2>
 
-                    <p class="mt-4 max-w-[430px] text-[12.5px] leading-[1.75] text-[#6a796c]">
+                    <p class="mt-2.5 max-w-[430px] text-[11.5px] xl:text-[12px] leading-[1.65] text-[#6a796c]">
                         Kelola data karyawan, proses penggajian, dan bagikan slip gaji digital — rapi, akurat, dan selalu tepat waktu.
                     </p>
 
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-[#dde8d3] bg-white/65 px-2.5 py-1.5 text-[10px] font-medium text-[#5f7659] backdrop-blur">
-                            <svg class="h-3.5 w-3.5 text-[#75916a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="mt-3 flex flex-wrap gap-1.5">
+                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-[#dde8d3] bg-white/65 px-2.5 py-1 text-[9.5px] font-medium text-[#5f7659] backdrop-blur">
+                            <svg class="h-3 w-3 text-[#75916a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                             Payroll otomatis
                         </span>
-                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-[#dde8d3] bg-white/65 px-2.5 py-1.5 text-[10px] font-medium text-[#5f7659] backdrop-blur">
-                            <svg class="h-3.5 w-3.5 text-[#75916a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-[#dde8d3] bg-white/65 px-2.5 py-1 text-[9.5px] font-medium text-[#5f7659] backdrop-blur">
+                            <svg class="h-3 w-3 text-[#75916a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             Slip gaji digital
                         </span>
-                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-[#dde8d3] bg-white/65 px-2.5 py-1.5 text-[10px] font-medium text-[#5f7659] backdrop-blur">
-                            <svg class="h-3.5 w-3.5 text-[#75916a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-[#dde8d3] bg-white/65 px-2.5 py-1 text-[9.5px] font-medium text-[#5f7659] backdrop-blur">
+                            <svg class="h-3 w-3 text-[#75916a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                             Laporan siap audit
@@ -100,8 +100,8 @@
                     </div>
 
                     {{-- Mini Dashboard Preview Card (Persis Gambar 3) --}}
-                    <div class="relative mt-5" aria-hidden="true">
-                        <div class="preview-shadow relative overflow-hidden rounded-[20px] border border-white/90 bg-white/90 p-3.5 ring-1 ring-[#dde8d4]/80 backdrop-blur-sm">
+                    <div class="relative mt-3.5 xl:mt-4" aria-hidden="true">
+                        <div class="preview-shadow relative overflow-hidden rounded-[18px] border border-white/90 bg-white/90 p-3 ring-1 ring-[#dde8d4]/80 backdrop-blur-sm">
                             <div class="pointer-events-none absolute -right-10 -top-14 h-32 w-32 rounded-full bg-[#edf4e5]"></div>
 
                             <div class="relative flex items-center justify-between gap-3">
@@ -114,13 +114,13 @@
                                         </span>
                                     </span>
                                     <div class="min-w-0">
-                                        <p class="truncate text-[11.5px] font-semibold tracking-[-0.1px] text-[#2f3c35]">
+                                        <p class="truncate text-[11px] font-semibold tracking-[-0.1px] text-[#2f3c35]">
                                             Ringkasan penggajian
                                         </p>
-                                        <p class="mt-0.5 truncate text-[9px] text-[#8f9b90]">PT. Sejahtera Bersama</p>
+                                        <p class="mt-0.5 truncate text-[8.5px] text-[#8f9b90]">{{ \App\Models\CompanySetting::getSettings()->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</p>
                                     </div>
                                 </div>
-                                <span class="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-[#e6ede0] bg-[#fbfdf8] px-2 py-1 text-[8.5px] font-medium text-[#71816a]">
+                                <span class="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-[#e6ede0] bg-[#fbfdf8] px-2 py-0.5 text-[8px] font-medium text-[#71816a]">
                                     <svg class="h-3 w-3 text-[#8a9c80]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
@@ -129,67 +129,67 @@
                             </div>
 
                             {{-- 3 Mini Stats --}}
-                            <div class="relative mt-3 grid grid-cols-3 gap-2">
-                                <div class="rounded-[9px] border border-[#eef2e9] bg-[#fbfcf9] px-2.5 py-2">
+                            <div class="relative mt-2.5 grid grid-cols-3 gap-2">
+                                <div class="rounded-[8px] border border-[#eef2e9] bg-[#fbfcf9] px-2 py-1.5">
                                     <div class="flex items-center justify-between gap-1">
-                                        <span class="truncate text-[8px] text-[#8b9784]">Total karyawan</span>
-                                        <span class="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-[5px] bg-[#eaf1e3] text-[#5f7d52]">
-                                            <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <span class="truncate text-[7.5px] text-[#8b9784]">Total karyawan</span>
+                                        <span class="grid h-[16px] w-[16px] shrink-0 place-items-center rounded-[4px] bg-[#eaf1e3] text-[#5f7d52]">
+                                            <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m20 0v-2a4 4 0 00-3-3.87M16 3a4 4 0 010 8" />
                                                 <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" />
                                             </svg>
                                         </span>
                                     </div>
-                                    <p class="mt-1 flex items-baseline gap-1 font-display text-[16px] font-extrabold leading-none tracking-[-0.04em] text-[#2c3a31]">
-                                        11 <span class="font-sans text-[7.5px] font-medium tracking-normal text-[#9ba596]">orang</span>
+                                    <p class="mt-0.5 flex items-baseline gap-1 font-display text-[14px] font-extrabold leading-none tracking-[-0.04em] text-[#2c3a31]">
+                                        11 <span class="font-sans text-[7px] font-medium tracking-normal text-[#9ba596]">orang</span>
                                     </p>
                                 </div>
 
-                                <div class="rounded-[9px] border border-[#eef2e9] bg-[#fbfcf9] px-2.5 py-2">
+                                <div class="rounded-[8px] border border-[#eef2e9] bg-[#fbfcf9] px-2 py-1.5">
                                     <div class="flex items-center justify-between gap-1">
-                                        <span class="truncate text-[8px] text-[#8b9784]">Payroll Juli</span>
-                                        <span class="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-[5px] bg-[#f6ecdf] text-[#a8825d]">
-                                            <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <span class="truncate text-[7.5px] text-[#8b9784]">Payroll Juli</span>
+                                        <span class="grid h-[16px] w-[16px] shrink-0 place-items-center rounded-[4px] bg-[#f6ecdf] text-[#a8825d]">
+                                            <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                             </svg>
                                         </span>
                                     </div>
-                                    <p class="mt-1 flex items-baseline gap-1 font-display text-[16px] font-extrabold leading-none tracking-[-0.04em] text-[#2c3a31]">
-                                        184,5 <span class="font-sans text-[7.5px] font-medium tracking-normal text-[#9ba596]">jt</span>
+                                    <p class="mt-0.5 flex items-baseline gap-1 font-display text-[14px] font-extrabold leading-none tracking-[-0.04em] text-[#2c3a31]">
+                                        184,5 <span class="font-sans text-[7px] font-medium tracking-normal text-[#9ba596]">jt</span>
                                     </p>
                                 </div>
 
-                                <div class="rounded-[9px] border border-[#eef2e9] bg-[#fbfcf9] px-2.5 py-2">
+                                <div class="rounded-[8px] border border-[#eef2e9] bg-[#fbfcf9] px-2 py-1.5">
                                     <div class="flex items-center justify-between gap-1">
-                                        <span class="truncate text-[8px] text-[#8b9784]">Slip terkirim</span>
-                                        <span class="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-[5px] bg-[#e8eef4] text-[#6a8399]">
-                                            <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <span class="truncate text-[7.5px] text-[#8b9784]">Slip terkirim</span>
+                                        <span class="grid h-[16px] w-[16px] shrink-0 place-items-center rounded-[4px] bg-[#e8eef4] text-[#6a8399]">
+                                            <svg class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                             </svg>
                                         </span>
                                     </div>
-                                    <p class="mt-1 flex items-baseline gap-1 font-display text-[16px] font-extrabold leading-none tracking-[-0.04em] text-[#2c3a31]">
+                                    <p class="mt-0.5 flex items-baseline gap-1 font-display text-[14px] font-extrabold leading-none tracking-[-0.04em] text-[#2c3a31]">
                                         11/11
                                     </p>
                                 </div>
                             </div>
 
                             {{-- Mini Bar Chart Tren --}}
-                            <div class="relative mt-2.5 rounded-[9px] border border-[#eef2e9] bg-white px-3 pb-2.5 pt-2.5">
+                            <div class="relative mt-2 rounded-[8px] border border-[#eef2e9] bg-white px-2.5 pb-2 pt-2">
                                 <div class="flex items-center justify-between">
-                                    <p class="text-[8.5px] font-medium text-[#7b8a75]">Tren penggajian</p>
-                                    <div class="flex items-center gap-2.5 text-[7.5px] text-[#98a391]">
+                                    <p class="text-[8px] font-medium text-[#7b8a75]">Tren penggajian</p>
+                                    <div class="flex items-center gap-2 text-[7px] text-[#98a391]">
                                         <span class="inline-flex items-center gap-1">
-                                            <i class="h-[5px] w-[5px] rounded-[2px] bg-forest"></i> 2026
+                                            <i class="h-[4px] w-[4px] rounded-[1.5px] bg-forest"></i> 2026
                                         </span>
                                         <span class="inline-flex items-center gap-1">
-                                            <i class="h-[5px] w-[5px] rounded-[2px] bg-[#d7e3cb]"></i> 2025
+                                            <i class="h-[4px] w-[4px] rounded-[1.5px] bg-[#d7e3cb]"></i> 2025
                                         </span>
                                     </div>
                                 </div>
 
-                                <div class="relative mt-2 h-[56px]">
-                                    <div class="pointer-events-none absolute inset-x-0 top-0 bottom-[15px] flex flex-col justify-between">
+                                <div class="relative mt-1.5 h-[46px] xl:h-[52px]">
+                                    <div class="pointer-events-none absolute inset-x-0 top-0 bottom-[14px] flex flex-col justify-between">
                                         <i class="border-t border-dashed border-[#eef2e8]"></i>
                                         <i class="border-t border-dashed border-[#eef2e8]"></i>
                                         <i class="border-t border-dashed border-[#eef2e8]"></i>
@@ -212,10 +212,10 @@
                                             <div class="flex w-full flex-1 items-end justify-center">
                                                 <span 
                                                     style="height: {{ $bar['value'] }}%;" 
-                                                    class="block w-full max-w-[15px] rounded-t-[3px] {{ $isCurrent ? 'bg-[linear-gradient(180deg,#3f7856,#2c5f44)]' : 'bg-[#d8e4cd]' }}"
+                                                    class="block w-full max-w-[14px] rounded-t-[3px] {{ $isCurrent ? 'bg-[linear-gradient(180deg,#3f7856,#2c5f44)]' : 'bg-[#d8e4cd]' }}"
                                                 ></span>
                                             </div>
-                                            <span class="mt-1.5 text-[7.5px] leading-none {{ $isCurrent ? 'font-semibold text-[#4d6c43]' : 'text-[#a3ac9d]' }}">
+                                            <span class="mt-1 text-[7px] leading-none {{ $isCurrent ? 'font-semibold text-[#4d6c43]' : 'text-[#a3ac9d]' }}">
                                                 {{ $bar['month'] }}
                                             </span>
                                         </div>
@@ -225,19 +225,19 @@
                             </div>
 
                             {{-- Mini Bottom Completed Box --}}
-                            <div class="relative mt-2.5 flex items-center justify-between gap-3 rounded-[9px] border border-[#eaf1e0] bg-[#f5f9ef] px-2.5 py-2">
+                            <div class="relative mt-2 flex items-center justify-between gap-3 rounded-[8px] border border-[#eaf1e0] bg-[#f5f9ef] px-2.5 py-1.5">
                                 <div class="flex min-w-0 items-center gap-2">
-                                    <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-forest text-white">
-                                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <span class="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-forest text-white">
+                                        <svg class="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </span>
                                     <div class="min-w-0">
-                                        <p class="truncate text-[9px] font-semibold text-[#455a3c]">Penggajian Juli selesai</p>
-                                        <p class="mt-0.5 truncate text-[7.5px] text-[#8b9780]">11 dari 11 slip gaji terkirim</p>
+                                        <p class="truncate text-[8.5px] font-semibold text-[#455a3c]">Penggajian Juli selesai</p>
+                                        <p class="mt-0.5 truncate text-[7px] text-[#8b9780]">11 dari 11 slip gaji terkirim</p>
                                     </div>
                                 </div>
-                                <span class="shrink-0 rounded-[5px] bg-white px-1.5 py-1 text-[8px] font-semibold text-[#5d7d4f] ring-1 ring-[#e4ecd9]">
+                                <span class="shrink-0 rounded-[4px] bg-white px-1.5 py-0.5 text-[7.5px] font-semibold text-[#5d7d4f] ring-1 ring-[#e4ecd9]">
                                     100%
                                 </span>
                             </div>
@@ -246,14 +246,14 @@
                 </div>
 
                 {{-- Left Footer --}}
-                <footer class="flex flex-wrap items-center justify-between gap-4 border-t border-[#d9e5ce] pt-4">
-                    <div class="flex items-center gap-3">
-                        <div class="flex -space-x-2">
-                            <span class="grid h-7 w-7 place-items-center rounded-full border-2 border-[#f3f7ed] text-[8px] font-semibold bg-[#e6edd9] text-[#5c7450]">AD</span>
-                            <span class="grid h-7 w-7 place-items-center rounded-full border-2 border-[#f3f7ed] text-[8px] font-semibold bg-[#e3ebf0] text-[#5b7482]">RN</span>
-                            <span class="grid h-7 w-7 place-items-center rounded-full border-2 border-[#f3f7ed] text-[8px] font-semibold bg-[#f1e8dc] text-[#8a7357]">SP</span>
-                            <span class="grid h-7 w-7 place-items-center rounded-full border-2 border-[#f3f7ed] text-[8px] font-semibold bg-[#ece5ef] text-[#7a6782]">MK</span>
-                            <span class="grid h-7 w-7 place-items-center rounded-full border-2 border-[#f3f7ed] bg-white text-[8px] font-semibold text-[#7c8b74] ring-1 ring-[#e3ebda]">+2k</span>
+                <footer class="flex flex-wrap items-center justify-between gap-3 border-t border-[#d9e5ce] pt-3 pb-1">
+                    <div class="flex items-center gap-2.5">
+                        <div class="flex -space-x-1.5">
+                            <span class="grid h-6 w-6 place-items-center rounded-full border border-[#f3f7ed] text-[7.5px] font-semibold bg-[#e6edd9] text-[#5c7450]">AD</span>
+                            <span class="grid h-6 w-6 place-items-center rounded-full border border-[#f3f7ed] text-[7.5px] font-semibold bg-[#e3ebf0] text-[#5b7482]">RN</span>
+                            <span class="grid h-6 w-6 place-items-center rounded-full border border-[#f3f7ed] text-[7.5px] font-semibold bg-[#f1e8dc] text-[#8a7357]">SP</span>
+                            <span class="grid h-6 w-6 place-items-center rounded-full border border-[#f3f7ed] text-[7.5px] font-semibold bg-[#ece5ef] text-[#7a6782]">MK</span>
+                            <span class="grid h-6 w-6 place-items-center rounded-full border border-[#f3f7ed] bg-white text-[7.5px] font-semibold text-[#7c8b74] ring-1 ring-[#e3ebda]">+2k</span>
                         </div>
                         <div>
                             <div class="flex items-center gap-0.5 text-[#8aa474]">
@@ -263,7 +263,7 @@
                                 </svg>
                                 @endfor
                             </div>
-                            <p class="mt-1 text-[9.5px] leading-none text-[#7f8d79]">
+                            <p class="mt-0.5 text-[9px] leading-none text-[#7f8d79]">
                                 <strong class="font-semibold text-[#536a4c]">2.400+ tim HR</strong> sudah beralih ke gajiku
                             </p>
                         </div>
@@ -271,13 +271,14 @@
                 </footer>
             </div>
         </section>
+        </section>
 
         {{-- ========================================================= --}}
         {{-- SISI KANAN: LOGIN CARD & FORM                             --}}
         {{-- ========================================================= --}}
-        <section id="login" aria-label="Formulir masuk gajiku" class="hero-surface relative flex min-h-screen flex-col px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+        <section id="login" aria-label="Formulir masuk gajiku" class="hero-surface relative flex min-h-screen flex-col px-4 py-5 sm:px-6 sm:py-6 lg:px-8 overflow-hidden">
             {{-- Background ambient --}}
-            <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+            <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
                 <div class="absolute -right-28 -top-24 h-72 w-72 rounded-full bg-[#e5efda]/80 blur-3xl"></div>
                 <div class="dot-field absolute -bottom-8 right-0 h-56 w-56 opacity-50 [mask-image:radial-gradient(closest-side,black,transparent)]"></div>
                 <span class="absolute left-[16%] top-[18%] h-1.5 w-1.5 rounded-full bg-[#c4d7b5]"></span>
@@ -319,7 +320,7 @@
                             </span>
                             <div class="min-w-0">
                                 <p class="text-[12.5px] font-semibold tracking-[-0.1px] text-ink">Sistem Penggajian</p>
-                                <p class="mt-0.5 truncate text-[10.5px] text-[#8b968c]">PT. Sejahtera Bersama</p>
+                                <p class="mt-0.5 truncate text-[10.5px] text-[#8b968c]">{{ \App\Models\CompanySetting::getSettings()->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</p>
                             </div>
                         </div>
                         <span class="shrink-0 items-center gap-1.5 rounded-full border border-[#e2ebdb] bg-[#f7faf2] px-2.5 py-1 text-[8.5px] font-bold uppercase tracking-[0.12em] text-[#6d8463] inline-flex">

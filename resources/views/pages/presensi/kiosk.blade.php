@@ -318,12 +318,34 @@
     </div>
 
     {{-- Footer --}}
+    @php
+        $companySetting = \App\Models\CompanySetting::getSettings();
+    @endphp
     <footer class="max-w-4xl w-full mx-auto text-center pt-6 border-t border-[#e5eae3] text-[11px] text-[#8e9c8f]">
-        Platform Presensi & Tata Kelola Kompensasi Mandiri <strong>gajiku.</strong> © {{ date('Y') }} PT. Sejahtera Bersama.
+        Platform Presensi & Tata Kelola Kompensasi Mandiri <strong>gajiku.</strong> © {{ date('Y') }} {{ $companySetting->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}.
     </footer>
 
     {{-- Script Realtime Clock & GPS --}}
     <script>
+        const OFFICE_LAT = {{ (float) ($companySetting->latitude ?? -6.2088) }};
+        const OFFICE_LNG = {{ (float) ($companySetting->longitude ?? 106.8456) }};
+        const OFFICE_RADIUS = {{ (int) ($companySetting->radius_meter ?? 100) }};
+
+        // Haversine distance calculator in meters
+        function getDistanceMeters(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // metres
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return Math.round(R * c);
+        }
+
         // Update Jam Digital Realtime
         function updateClock() {
             const now = new Date();
@@ -356,26 +378,30 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 function(pos) {
-                    const lat = pos.coords.latitude.toFixed(4);
-                    const lng = pos.coords.longitude.toFixed(4);
-                    document.getElementById('geo-coords').innerText = `${lat}, ${lng}`;
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    document.getElementById('geo-coords').innerText = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
                     document.getElementById('input-lat').value = lat;
                     document.getElementById('input-lng').value = lng;
                     
-                    // Hitung jarak simulasi ke kantor
-                    document.getElementById('geo-distance').innerText = "Dalam Jangkauan (35m)";
-                    document.getElementById('input-jarak').value = "35 meter";
+                    const dist = getDistanceMeters(lat, lng, OFFICE_LAT, OFFICE_LNG);
+                    if (dist <= OFFICE_RADIUS) {
+                        document.getElementById('geo-distance').innerText = `Dalam Jangkauan (${dist}m / maks ${OFFICE_RADIUS}m)`;
+                    } else {
+                        document.getElementById('geo-distance').innerText = `Di Luar Radius (${dist}m / maks ${OFFICE_RADIUS}m)`;
+                    }
+                    document.getElementById('input-jarak').value = `${dist} meter`;
                 },
                 function(err) {
-                    // Fallback ramah jika izin GPS tidak diizinkan
-                    document.getElementById('geo-coords').innerText = "-6.2088, 106.8456 (Jakarta)";
-                    document.getElementById('geo-distance').innerText = "Radius Terverifikasi (Mode Demo)";
+                    // Fallback ramah jika izin GPS tidak diizinkan / simulasi
+                    document.getElementById('geo-coords').innerText = `${OFFICE_LAT}, ${OFFICE_LNG} (Kantor)`;
+                    document.getElementById('geo-distance').innerText = `Radius Terverifikasi (Maks ${OFFICE_RADIUS}m)`;
                 },
                 { timeout: 5000 }
             );
         } else {
-            document.getElementById('geo-coords').innerText = "-6.2088, 106.8456";
-            document.getElementById('geo-distance').innerText = "Standar Kantor";
+            document.getElementById('geo-coords').innerText = `${OFFICE_LAT}, ${OFFICE_LNG}`;
+            document.getElementById('geo-distance').innerText = `Standar Kantor`;
         }
     </script>
 </body>

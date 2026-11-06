@@ -225,6 +225,7 @@ $bulanList = [
     9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
 ];
 $blnNama = is_numeric($slipGaji->bulan) ? ($bulanList[(int)$slipGaji->bulan] ?? $slipGaji->bulan) : $slipGaji->bulan;
+$companySetting = \App\Models\CompanySetting::getSettings();
 @endphp
 
     {{-- KOP DOKUMEN --}}
@@ -232,8 +233,8 @@ $blnNama = is_numeric($slipGaji->bulan) ? ($bulanList[(int)$slipGaji->bulan] ?? 
         <tr>
             <td width="60%">
                 <div class="brand-logo">gajiku<span class="brand-dot">.</span></div>
-                <div class="company-name">PT. Sejahtera Bersama</div>
-                <div class="company-address">Sistem Penggajian & Tata Kelola Kompensasi Karyawan</div>
+                <div class="company-name">{{ $companySetting->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</div>
+                <div class="company-address">{{ $companySetting->alamat ?? 'Sistem Penggajian & Tata Kelola Kompensasi Karyawan' }}</div>
             </td>
             <td width="40%" class="doc-badge">
                 <span class="badge-status">LUNAS / DITERBITKAN</span>
@@ -330,7 +331,7 @@ $blnNama = is_numeric($slipGaji->bulan) ? ($bulanList[(int)$slipGaji->bulan] ?? 
                 Mengetahui & Menyetujui,
                 <div class="sign-space"></div>
                 <div class="sign-name">HRD & Finance Dept.</div>
-                <div class="sign-role">PT. Sejahtera Bersama</div>
+                <div class="sign-role">{{ $companySetting->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</div>
             </td>
             <td>
                 Diterima oleh,
@@ -344,7 +345,7 @@ $blnNama = is_numeric($slipGaji->bulan) ? ($bulanList[(int)$slipGaji->bulan] ?? 
     {{-- FOOTER --}}
     <div class="footer-note">
         Dokumen ini diterbitkan secara sah dan otomatis oleh platform <strong>gajiku.</strong><br>
-        Harap menjaga kerahasiaan informasi dokumen slip gaji ini. © {{ date('Y') }} PT. Sejahtera Bersama.
+        Harap menjaga kerahasiaan informasi dokumen slip gaji ini. © {{ date('Y') }} {{ $companySetting->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}.
     </div>
 </body>
 </html>

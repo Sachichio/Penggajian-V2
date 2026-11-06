@@ -202,6 +202,14 @@ Route::middleware(['auth', 'role:admin,owner'])->group(function () {
      */
     Route::post('/penggajian/{id}/approve', [PenggajianController::class, 'approvePayroll'])
         ->name('penggajian.approve');
+
+    /**
+     * Pengaturan Profil Perusahaan (White-Label Dynamic Company)
+     */
+    Route::get('/pengaturan-perusahaan', [\App\Http\Controllers\CompanySettingController::class, 'edit'])
+        ->name('company.edit');
+    Route::put('/pengaturan-perusahaan', [\App\Http\Controllers\CompanySettingController::class, 'update'])
+        ->name('company.update');
 });
 
 /**

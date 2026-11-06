@@ -213,6 +213,7 @@ $namaBulan = [
 ];
 $blnNama = is_numeric($bulan) ? ($namaBulan[(int)$bulan] ?? $bulan) : $bulan;
 
+$companySetting = \App\Models\CompanySetting::getSettings();
 $totalGajiPokok   = $laporans->sum('gaji_pokok');
 $totalPendapatan  = $laporans->sum('total_pendapatan');
 $totalPotongan    = $laporans->sum('total_potongan');
@@ -224,8 +225,8 @@ $totalTHP         = $laporans->sum('thp');
         <tr>
             <td width="65%">
                 <div class="brand-logo">gajiku<span class="brand-dot">.</span></div>
-                <div class="company-name">PT. Sejahtera Bersama</div>
-                <div class="company-address">Laporan Rekapitulasi Beban Penggajian & Tata Kelola Kompensasi</div>
+                <div class="company-name">{{ $companySetting->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</div>
+                <div class="company-address">{{ $companySetting->alamat ?? 'Laporan Rekapitulasi Beban Penggajian & Tata Kelola Kompensasi' }}</div>
             </td>
             <td width="35%" class="doc-badge">
                 <span class="badge-period">PERIODE: {{ strtoupper($blnNama) }} {{ $tahun }}</span>
@@ -339,7 +340,7 @@ $totalTHP         = $laporans->sum('thp');
                             Pimpinan Perusahaan
                             <div class="sign-space"></div>
                             <div class="sign-name">Direksi / General Manager</div>
-                            <div class="sign-role">PT. Sejahtera Bersama</div>
+                            <div class="sign-role">{{ $companySetting->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</div>
                         </td>
                     </tr>
                 </table>
@@ -349,7 +350,7 @@ $totalTHP         = $laporans->sum('thp');
 
     {{-- FOOTER --}}
     <div class="footer-note">
-        Laporan rekapitulasi ini dicetak secara otomatis melalui sistem <strong>gajiku.</strong> Dokumen resmi yang mengikat tata kelola keuangan perusahaan. © {{ date('Y') }} PT. Sejahtera Bersama.
+        Laporan rekapitulasi ini dicetak secara otomatis melalui sistem <strong>gajiku.</strong> Dokumen resmi yang mengikat tata kelola keuangan perusahaan. © {{ date('Y') }} {{ $companySetting->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}.
     </div>
 </body>
 </html>
