@@ -473,18 +473,6 @@
     </div>
 </section>
 
-{{-- ========================================================= --}}
-{{-- 4. FOOTER HALAMAN (PERSIS GAMBAR 2)                       --}}
-{{-- ========================================================= --}}
-<footer class="main-footer">
-    <span>© 2026 PT. Sejahtera Bersama</span>
-    <span>
-        <span><i></i> Sistem berjalan normal</span>
-        <span class="footer-separator">•</span>
-        <span>Made simple with <strong>gajiku.</strong></span>
-    </span>
-</footer>
-
 <script>
     function filterTableRows() {
         const searchInput = (document.getElementById('payroll-search-input').value || '').toLowerCase();

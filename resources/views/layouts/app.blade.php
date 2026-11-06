@@ -187,7 +187,7 @@
         .table-footer strong { color: #819074; font-weight: 500; }
         .table-footer a, .table-footer button { color: #658151; display: flex; align-items: center; gap: 7px; font-weight: 500; font-size: 9px; text-decoration: none; }
 
-        .main-footer { padding: 21px 0 22px; display: flex; justify-content: space-between; align-items: center; color: #a3ad9b; font-size: 8px; margin-top: auto; }
+        .main-footer { padding: 22px 34px 24px; display: flex; justify-content: space-between; align-items: center; color: #a3ad9b; font-size: 8.5px; margin-top: auto; border-top: 1px solid #edf1ea; }
         .main-footer > span:last-child { display: flex; align-items: center; gap: 5px; }
         .main-footer i { width: 4px; height: 4px; background: #93aa78; border-radius: 50%; display: inline-block; margin-right: 1px; }
 
@@ -197,6 +197,7 @@
             .main-shell { margin-left: 220px; }
             .topbar { padding: 0 25px; }
             main { padding: 26px 25px 0; }
+            .main-footer { padding: 20px 25px; }
             .stats-grid { gap: 12px; }
             .stat-card { padding: 14px 13px; }
             .stat-value { font-size: 28px; }
@@ -218,6 +219,7 @@
             .mobile-menu { display: inline-flex; }
             .topbar { height: 65px; padding: 0 20px; }
             main { padding: 25px 20px 0; }
+            .main-footer { padding: 18px 20px; flex-direction: column; gap: 6px; text-align: center; }
         }
     </style>
 </head>
@@ -468,6 +470,16 @@
         <main>
             @yield('content')
         </main>
+
+        {{-- Global Main Footer --}}
+        <footer class="main-footer">
+            <span>© {{ date('Y') }} {{ $activeCompany->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</span>
+            <span>
+                <span><i></i> Sistem berjalan normal</span>
+                <span class="footer-separator">•</span>
+                <span>Made simple with <strong>gajiku.</strong></span>
+            </span>
+        </footer>
     </div>
 
 </div>
