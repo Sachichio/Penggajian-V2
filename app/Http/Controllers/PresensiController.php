@@ -298,10 +298,10 @@ class PresensiController extends Controller
     /**
      * API JSON: Ringkasan Presensi Karyawan untuk Auto-fill Form Payroll
      */
-    public function getAttendanceSummary($karyawanId, $bulan, $tahun)
+    public function getAttendanceSummary(Request $request, $karyawanId, $bulan = null, $tahun = null)
     {
-        $bulanAngka = (int)$bulan;
-        $tahunAngka = (int)$tahun;
+        $bulanAngka = (int) ($bulan ?? $request->get('bulan', Carbon::now()->month));
+        $tahunAngka = (int) ($tahun ?? $request->get('tahun', Carbon::now()->year));
 
         // Ambil semua log presensi karyawan pada bulan & tahun tersebut
         $records = Presensi::where('karyawan_id', $karyawanId)
@@ -326,6 +326,7 @@ class PresensiController extends Controller
             'hari_kerja_efektif' => $hariKerjaEfektif,
             'total_hadir' => $totalHadir,
             'total_lembur' => $totalLembur,
+            'jam_lembur' => $totalLembur, // Alias key untuk kompatibilitas frontend
             'total_sakit' => $totalSakit,
             'total_izin' => $totalIzin,
             'total_cuti' => $totalCuti,

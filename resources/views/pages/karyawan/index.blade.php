@@ -115,7 +115,7 @@
                     </td>
                     <td style="text-align: center;">
                         <span style="color: #6a766c; font-size: 10.5px;">
-                            {{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                            {{ in_array($item->jenis_kelamin, ['L', 'Laki-laki']) ? 'Laki-laki' : 'Perempuan' }}
                         </span>
                     </td>
                     <td style="text-align: center;">

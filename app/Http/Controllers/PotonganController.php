@@ -15,9 +15,11 @@ class PotonganController extends Controller
             'potongans'
         ])->findOrFail($penggajianId);
 
+        $potongans = $penggajian->potongans;
+
         return view(
             'pages.potongan.index',
-            compact('penggajian')
+            compact('penggajian', 'potongans')
         );
     }
     

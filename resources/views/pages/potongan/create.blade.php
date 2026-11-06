@@ -30,12 +30,12 @@
                 </label>
                 <input
                     type="text"
-                    name="nama_potongan"
-                    value="{{ old('nama_potongan') }}"
+                    name="jenis_potongan"
+                    value="{{ old('jenis_potongan') }}"
                     placeholder="Contoh: BPJS Ketenagakerjaan / Kasbon"
                     required
                     class="h-[42px] w-full rounded-[8px] border border-[#d6e0ce] bg-[#fbfdfa] px-3 text-[12px] text-ink outline-none transition focus:border-forest focus:bg-white focus:ring-2 focus:ring-forest/15">
-                @error('nama_potongan')
+                @error('jenis_potongan')
                     <p class="text-red-600 text-[10.5px] mt-1">{{ $message }}</p>
                 @enderror
             </div>

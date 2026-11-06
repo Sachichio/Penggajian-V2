@@ -59,7 +59,7 @@
 
             <div class="rounded-lg border border-[#edf1e8] bg-[#fbfdfa] p-4">
                 <p class="text-[10px] font-semibold uppercase tracking-wider text-[#8b998a]">Informasi Personal</p>
-                <p class="text-[12px] text-ink mt-1">Jenis Kelamin: <strong class="text-[#3c4a3d]">{{ $karyawan->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</strong></p>
+                <p class="text-[12px] text-ink mt-1">Jenis Kelamin: <strong class="text-[#3c4a3d]">{{ in_array($karyawan->jenis_kelamin, ['L', 'Laki-laki']) ? 'Laki-laki' : 'Perempuan' }}</strong></p>
                 <p class="text-[12px] text-ink mt-1">Tanggal Bergabung: <strong class="text-[#3c4a3d]">{{ \Carbon\Carbon::parse($karyawan->tanggal_masuk)->translatedFormat('d F Y') }}</strong></p>
                 <p class="text-[12px] text-ink mt-1">Masa Kerja: <strong class="text-[#3c4a3d]">{{ \Carbon\Carbon::parse($karyawan->tanggal_masuk)->diffForHumans(null, true) }}</strong></p>
             </div>

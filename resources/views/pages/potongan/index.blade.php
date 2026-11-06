@@ -68,7 +68,7 @@ $bln = is_numeric($penggajian->bulan) ? ($bulanList[(int)$penggajian->bulan] ?? 
                 <tr>
                     <td style="text-align: center; color: #9aa299; font-weight: 500;">{{ $loop->iteration }}</td>
                     <td>
-                        <strong style="color: #2b382d;">{{ $item->nama_potongan }}</strong>
+                        <strong style="color: #2b382d;">{{ $item->jenis_potongan }}</strong>
                     </td>
                     <td style="color: #b94a48; font-weight: 600;">
                         - Rp {{ number_format($item->nominal, 0, ',', '.') }}
@@ -82,7 +82,7 @@ $bln = is_numeric($penggajian->bulan) ? ($bulanList[(int)$penggajian->bulan] ?? 
                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                 </svg>
                             </a>
-                            <form action="{{ route('potongan.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Hapus potongan {{ $item->nama_potongan }}?')">
+                            <form action="{{ route('potongan.destroy', $item->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Hapus potongan {{ $item->jenis_potongan }}?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="action-icon-btn danger" title="Hapus Potongan">

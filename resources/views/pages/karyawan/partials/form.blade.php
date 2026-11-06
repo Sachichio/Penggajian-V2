@@ -70,8 +70,8 @@
                 required
                 class="h-[42px] w-full rounded-[8px] border border-[#d6e0ce] bg-[#fbfdfa] px-3 text-[12px] text-ink outline-none transition focus:border-forest focus:bg-white focus:ring-2 focus:ring-forest/15">
                 <option value="">-- Pilih Jenis Kelamin --</option>
-                <option value="L" {{ old('jenis_kelamin', $karyawan->jenis_kelamin ?? '') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="P" {{ old('jenis_kelamin', $karyawan->jenis_kelamin ?? '') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                <option value="Laki-laki" {{ old('jenis_kelamin', $karyawan->jenis_kelamin ?? '') == 'Laki-laki' || old('jenis_kelamin', $karyawan->jenis_kelamin ?? '') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                <option value="Perempuan" {{ old('jenis_kelamin', $karyawan->jenis_kelamin ?? '') == 'Perempuan' || old('jenis_kelamin', $karyawan->jenis_kelamin ?? '') == 'P' ? 'selected' : '' }}>Perempuan</option>
             </select>
             @error('jenis_kelamin')
                 <p class="text-red-600 text-[10.5px] mt-1">{{ $message }}</p>

@@ -283,7 +283,7 @@
                     <circle cx="9" cy="7" r="4" />
                 </svg>
                 <span>Data Karyawan</span>
-                <span class="nav-count">11</span>
+                <span class="nav-count">{{ \App\Models\Karyawan::where('status', 'Aktif')->count() }}</span>
                 @if(request()->routeIs('karyawan.*'))
                 <span class="active-dot"></span>
                 @endif

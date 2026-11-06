@@ -229,7 +229,8 @@ class PenggajianController extends Controller
             $tunjangan +
             $totalLembur;
 
-        $totalPotongan = 0;
+        // Ambil akumulasi rincian potongan eksisting dari database agar tidak ter-reset
+        $totalPotongan = (float) $penggajian->potongans()->sum('nominal');
 
         $thp =
             $totalPendapatan -

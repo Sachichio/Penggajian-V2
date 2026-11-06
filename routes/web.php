@@ -88,14 +88,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('jabatan', JabatanController::class);
 
     /**
-     * Penggajian
+     * Penggajian (Mutasi Form & CRUD khusus Admin)
      */
-    Route::resource('penggajian', PenggajianController::class);
-
-    Route::get(
-        '/potongan/{penggajian}',
-        [PotonganController::class, 'index']
-    )->name('potongan.index');
+    Route::resource('penggajian', PenggajianController::class)->except(['index', 'show']);
 
     /**
      * Potongan
@@ -147,6 +142,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:admin,owner'])->group(function () {
 
     /**
+     * Penggajian (Daftar & Detail dapat diakses Admin & Owner)
+     */
+    Route::get('/penggajian', [PenggajianController::class, 'index'])
+        ->name('penggajian.index');
+
+    Route::get('/penggajian/{penggajian}', [PenggajianController::class, 'show'])
+        ->name('penggajian.show');
+
+    /**
      * Slip Gaji
      */
     Route::get('/slip-gaji', [SlipGajiController::class, 'index'])
@@ -190,7 +194,7 @@ Route::middleware(['auth', 'role:admin,owner'])->group(function () {
     Route::post('/presensi/pengajuan/{id}/reject', [PresensiController::class, 'rejectIzin'])
         ->name('presensi.reject');
 
-    Route::get('/api/karyawan/{id}/attendance-summary/{bulan}/{tahun}', [PresensiController::class, 'getAttendanceSummary'])
+    Route::get('/api/karyawan/{id}/attendance-summary/{bulan?}/{tahun?}', [PresensiController::class, 'getAttendanceSummary'])
         ->name('api.karyawan.attendance');
 
     /**

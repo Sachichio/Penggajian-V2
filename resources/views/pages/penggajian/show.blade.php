@@ -19,7 +19,7 @@ $bln = is_numeric($penggajian->bulan) ? ($bulanList[(int)$penggajian->bulan] ?? 
         <p>Rincian lengkap perhitungan gaji karyawan periode <strong>{{ $bln }} {{ $penggajian->tahun }}</strong>.</p>
     </div>
     <div class="flex items-center gap-2">
-        @if(auth()->user() && auth()->user()->role === 'owner' && ($penggajian->status_approval ?? 'pending') === 'pending')
+        @if(auth()->user() && auth()->user()->role === 'owner' && ($penggajian->status_approval ?? 'Menunggu Persetujuan') !== 'Disetujui')
             <form action="{{ route('penggajian.approve', $penggajian->id) }}" method="POST">
                 @csrf
                 <button type="submit" class="button primary" style="background: #2563eb; border-color: #2563eb;">
@@ -52,7 +52,7 @@ $bln = is_numeric($penggajian->bulan) ? ($bulanList[(int)$penggajian->bulan] ?? 
         <div class="flex items-center justify-between border-b border-[#edf1e8] pb-4 mb-4">
             <h2 class="text-[13px] font-bold text-ink uppercase tracking-wider font-display">Data Karyawan & Periode</h2>
             <div class="flex items-center gap-2">
-                @if(($penggajian->status_approval ?? 'pending') === 'approved')
+                @if(($penggajian->status_approval ?? '') === 'Disetujui')
                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
                         ✓ Disetujui Owner
                     </span>
