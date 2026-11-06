@@ -31,6 +31,17 @@
 </div>
 @endif
 
+@if(session('error'))
+<div class="mb-5 flex items-center gap-2.5 rounded-[8px] border border-red-200 bg-red-50/80 px-4 py-3 text-[11.5px] font-medium text-red-700">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600 shrink-0">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    <span>{{ session('error') }}</span>
+</div>
+@endif
+
 {{-- ========================================================= --}}
 {{-- 2. TABEL PANEL GAJIKU                                     --}}
 {{-- ========================================================= --}}

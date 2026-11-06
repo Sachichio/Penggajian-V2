@@ -12,7 +12,7 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        $laporans = Penggajian::select(
+        $query = Penggajian::select(
                 'bulan',
                 'tahun'
             )
@@ -22,8 +22,14 @@ class LaporanController extends Controller
             ->selectRaw('SUM(thp) as total_thp')
             ->groupBy('bulan', 'tahun')
             ->orderByDesc('tahun')
-            ->orderByDesc('bulan')
-            ->get();
+            ->orderByDesc('bulan');
+
+        // Pembatasan Kuota Akun Demo (Maksimal 10 Rekap Periode Laporan)
+        if (auth()->check() && auth()->user()->isDemo()) {
+            $query->limit(10);
+        }
+
+        $laporans = $query->get();
 
         return view(
             'pages.laporan.index',
@@ -36,14 +42,20 @@ class LaporanController extends Controller
      */
     public function show($bulan, $tahun)
     {
-        $laporans = Penggajian::with([
+        $query = Penggajian::with([
                 'karyawan.jabatan',
                 'potongans',
             ])
             ->where('bulan', $bulan)
             ->where('tahun', $tahun)
-            ->orderBy('id')
-            ->get();
+            ->orderBy('id');
+
+        // Pembatasan Kuota Akun Demo (Maksimal 10 Rincian Payroll)
+        if (auth()->check() && auth()->user()->isDemo()) {
+            $query->limit(10);
+        }
+
+        $laporans = $query->get();
 
         return view(
             'pages.laporan.show',
@@ -60,14 +72,20 @@ class LaporanController extends Controller
      */
     public function exportPdf($bulan, $tahun)
     {
-        $laporans = Penggajian::with([
+        $query = Penggajian::with([
                 'karyawan.jabatan',
                 'potongans',
             ])
             ->where('bulan', $bulan)
             ->where('tahun', $tahun)
-            ->orderBy('id')
-            ->get();
+            ->orderBy('id');
+
+        // Pembatasan Kuota Akun Demo (Maksimal 10 Ekspor PDF)
+        if (auth()->check() && auth()->user()->isDemo()) {
+            $query->limit(10);
+        }
+
+        $laporans = $query->get();
 
         $pdf = Pdf::loadView(
             'pages.laporan.export',
@@ -92,14 +110,20 @@ class LaporanController extends Controller
      */
     public function exportCsv($bulan, $tahun)
     {
-        $laporans = Penggajian::with([
+        $query = Penggajian::with([
                 'karyawan.jabatan',
                 'potongans',
             ])
             ->where('bulan', $bulan)
             ->where('tahun', $tahun)
-            ->orderBy('id')
-            ->get();
+            ->orderBy('id');
+
+        // Pembatasan Kuota Akun Demo (Maksimal 10 Ekspor CSV)
+        if (auth()->check() && auth()->user()->isDemo()) {
+            $query->limit(10);
+        }
+
+        $laporans = $query->get();
 
         $filename = 'Laporan-Penggajian-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . $tahun . '.csv';
 

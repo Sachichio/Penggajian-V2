@@ -26,6 +26,13 @@ class PenggajianController extends Controller
      */
     public function create()
     {
+        // Cegah pembukaan form tambah jika kuota akun demo sudah penuh
+        if (auth()->check() && auth()->user()->isDemo() && Penggajian::count() >= 20) {
+            return redirect()
+                ->route('penggajian.index')
+                ->with('error', 'Batas kuota maksimal 20 transaksi penggajian untuk akun demo telah tercapai. Hapus salah satu transaksi untuk menambah kembali.');
+        }
+
         $karyawans = Karyawan::with('jabatan')
             ->where('status', 'Aktif')
             ->orderBy('nama')
@@ -76,6 +83,13 @@ class PenggajianController extends Controller
      */
     public function store(Request $request)
     {
+        // Pembatasan Kuota Akun Demo (Maksimal 20 Transaksi Penggajian)
+        if (auth()->check() && auth()->user()->isDemo() && Penggajian::count() >= 20) {
+            return redirect()
+                ->route('penggajian.index')
+                ->with('error', 'Batas kuota maksimal 20 transaksi penggajian untuk akun demo telah tercapai. Hapus salah satu transaksi untuk mencoba menambah kembali.');
+        }
+
         $validated = $request->validate([
 
             'karyawan_id' => 'required|exists:karyawans,id',

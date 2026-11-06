@@ -25,6 +25,13 @@ class KaryawanController extends Controller
      */
     public function create()
     {
+        // Cegah pembukaan form tambah jika kuota akun demo sudah penuh
+        if (auth()->check() && auth()->user()->isDemo() && Karyawan::count() >= 20) {
+            return redirect()
+                ->route('karyawan.index')
+                ->with('error', 'Batas kuota maksimal 20 karyawan untuk akun demo telah tercapai. Hapus salah satu data untuk menambah kembali.');
+        }
+
         $jabatans = Jabatan::orderBy('nama_jabatan')->get();
 
         return view('pages.karyawan.create', compact('jabatans'));
@@ -35,6 +42,13 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
+        // Pembatasan Kuota Akun Demo (Maksimal 20 Karyawan)
+        if (auth()->check() && auth()->user()->isDemo() && Karyawan::count() >= 20) {
+            return redirect()
+                ->route('karyawan.index')
+                ->with('error', 'Batas kuota maksimal 20 karyawan untuk akun demo telah tercapai. Hapus salah satu data untuk mencoba menambah kembali.');
+        }
+
         $validated = $request->validate([
             'nik'             => 'required|string|max:20|unique:karyawans,nik',
             'nama'   => 'required|string|max:255',

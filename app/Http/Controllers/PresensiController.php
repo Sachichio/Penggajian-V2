@@ -147,6 +147,11 @@ class PresensiController extends Controller
      */
     public function ajukanIzin(Request $request)
     {
+        // Pembatasan Kuota Akun Demo (Maksimal 10 Pengajuan Izin/Cuti)
+        if (auth()->check() && auth()->user()->isDemo() && PengajuanIzin::count() >= 10) {
+            return back()->with('error', 'Batas kuota maksimal 10 permohonan izin untuk akun demo telah tercapai.');
+        }
+
         $request->validate([
             'karyawan_id' => 'required|exists:karyawans,id',
             'pin' => 'required',
@@ -213,9 +218,15 @@ class PresensiController extends Controller
             ->latest()
             ->get();
 
-        $pengajuanIzins = PengajuanIzin::with('karyawan.jabatan')
-            ->latest()
-            ->paginate(15);
+        $pengajuanIzinsQuery = PengajuanIzin::with('karyawan.jabatan')
+            ->latest();
+
+        // Pembatasan Kuota Akun Demo (Maksimal 10 Pengajuan Izin/Cuti)
+        if (auth()->check() && auth()->user()->isDemo()) {
+            $pengajuanIzins = $pengajuanIzinsQuery->limit(10)->paginate(10);
+        } else {
+            $pengajuanIzins = $pengajuanIzinsQuery->paginate(15);
+        }
 
         $totalKaryawan = Karyawan::where('status', 'Aktif')->count();
         $totalHadir = $presensis->whereIn('status', ['Hadir', 'Terlambat'])->count();

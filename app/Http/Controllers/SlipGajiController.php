@@ -12,12 +12,18 @@ class SlipGajiController extends Controller
      */
     public function index()
     {
-        $slipGajis = Penggajian::with([
+        $query = Penggajian::with([
             'karyawan.jabatan',
             'potongans',
         ])
-        ->latest()
-        ->get();
+        ->latest();
+
+        // Pembatasan Kuota Akun Demo (Maksimal 20 Slip Gaji)
+        if (auth()->check() && auth()->user()->isDemo()) {
+            $query->limit(20);
+        }
+
+        $slipGajis = $query->get();
 
         return view(
             'pages.slip-gaji.index',

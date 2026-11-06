@@ -9,7 +9,7 @@
         {{-- ========================================================= --}}
         {{-- SISI KIRI: BRAND PANEL (PERSIS GAMBAR 3)                  --}}
         {{-- ========================================================= --}}
-        <section aria-label="Tentang gajiku" class="hero-surface no-scrollbar relative hidden min-h-screen overflow-x-hidden overflow-y-auto border-r border-[#e1ead8] lg:flex lg:flex-col">
+        <section aria-label="Tentang gajiku" class="hero-surface relative hidden min-h-screen border-r border-[#e1ead8] lg:flex lg:flex-col">
             {{-- Background Decorative Accents --}}
             <div class="pointer-events-none absolute inset-0" aria-hidden="true">
                 <div class="absolute -left-28 -top-28 h-80 w-80 rounded-full bg-[#dcead0]/70 blur-3xl"></div>
@@ -273,9 +273,9 @@
         </section>
 
         {{-- ========================================================= --}}
-        {{-- SISI KANAN: LOGIN CARD & FORM (PERSIS GAMBAR 3)           --}}
+        {{-- SISI KANAN: LOGIN CARD & FORM                             --}}
         {{-- ========================================================= --}}
-        <section id="login" aria-label="Formulir masuk gajiku" class="auth-canvas relative flex min-h-screen flex-col overflow-hidden px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+        <section id="login" aria-label="Formulir masuk gajiku" class="hero-surface relative flex min-h-screen flex-col px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
             {{-- Background ambient --}}
             <div class="pointer-events-none absolute inset-0" aria-hidden="true">
                 <div class="absolute -right-28 -top-24 h-72 w-72 rounded-full bg-[#e5efda]/80 blur-3xl"></div>
@@ -362,9 +362,8 @@
 
                         {{-- Email --}}
                         <div>
-                            <label for="login-email" class="mb-1.5 flex items-center justify-between text-[11px] font-semibold text-[#5c6d59]">
+                            <label for="login-email" class="mb-1.5 block text-[11px] font-semibold text-[#5c6d59]">
                                 <span>Email</span>
-                                <span class="text-[9px] font-normal text-[#a4aea3]">Email kantor</span>
                             </label>
                             <div class="group relative flex items-center rounded-[10px] border border-[#d6e0ce] bg-[#fbfdfa] transition-all focus-within:border-forest focus-within:bg-white focus-within:ring-2 focus-within:ring-forest/15">
                                 <svg class="pointer-events-none absolute left-3.5 h-[16px] w-[16px] text-[#98a493] group-focus-within:text-forest-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -377,7 +376,7 @@
                                     value="{{ old('email') }}" 
                                     required 
                                     autofocus 
-                                    placeholder="nama@sejahtera.co.id" 
+                                    placeholder="nama@sacchio.com" 
                                     class="h-[46px] w-full rounded-[10px] bg-transparent pl-10 pr-3 text-[13px] text-ink placeholder:text-[#a6b0a6] outline-none"
                                 >
                             </div>
@@ -440,23 +439,25 @@
                     </form>
 
                     {{-- Demo Account Box --}}
-                    <div class="mt-4 rounded-[10px] border border-dashed border-[#d9e5cf] bg-[#f7faf3] p-2.5">
-                        <div class="flex items-center gap-2.5">
-                            <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-[#e5ecdc] bg-white text-forest-600">
-                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                                </svg>
-                            </span>
-                            <div class="min-w-0 flex-1">
-                                <p class="text-[10px] font-semibold text-[#54684d]">Coba dengan akun demo</p>
-                                <p class="mt-0.5 truncate text-[9.5px] text-[#8b967f]">
-                                    admin@gmail.com <span class="text-[#b3bcab]">·</span> 123
-                                </p>
+                    <div class="mt-4 rounded-[12px] border border-dashed border-[#cddfc0] bg-[#f4f9ee] p-3">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex min-w-0 items-center gap-2.5">
+                                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[#dce9d0] bg-white text-forest-600 shadow-sm">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                    </svg>
+                                </span>
+                                <div class="min-w-0">
+                                    <p class="text-[11px] font-semibold text-[#3e5635]">Coba dengan Akun Demo</p>
+                                    <p class="mt-0.5 truncate text-[9.5px] font-medium text-[#657d5f]">
+                                        demo@gmail.com
+                                    </p>
+                                </div>
                             </div>
                             <button 
                                 type="button" 
                                 onclick="fillDemoCredentials()" 
-                                class="shrink-0 rounded-md border border-[#dde8d4] bg-white px-2 py-1.5 text-[9.5px] font-semibold text-[#5a7a4d] shadow-[0_1px_1px_rgba(35,70,49,0.03)] transition hover:border-[#c9dabb] hover:bg-[#f1f7ea]"
+                                class="shrink-0 rounded-[8px] bg-forest px-3 py-1.5 text-[10px] font-semibold text-white shadow-sm transition hover:bg-[#28573d] hover:shadow"
                             >
                                 Isi otomatis
                             </button>
@@ -477,10 +478,6 @@
             <footer class="relative z-10 mx-auto flex w-full max-w-[420px] flex-col items-center justify-between gap-2 text-[10px] text-[#7d8b80] sm:flex-row sm:gap-3">
                 <p class="flex items-center gap-1">
                     <span>© 2026 gajiku.</span>
-                    <span class="px-0.5 text-[#c3cbc1]">·</span>
-                    <span class="text-ink font-medium">Privasi</span>
-                    <span class="px-0.5 text-[#c3cbc1]">·</span>
-                    <span class="text-ink font-medium">Ketentuan</span>
                 </p>
                 <p class="inline-flex items-center gap-1.5">
                     <span class="relative flex h-1.5 w-1.5">
@@ -512,8 +509,13 @@
     }
 
     function fillDemoCredentials() {
-        document.getElementById('login-email').value = 'admin@gmail.com';
-        document.getElementById('login-password').value = '123';
+        const emailInput = document.getElementById('login-email');
+        const passInput = document.getElementById('login-password');
+        if (emailInput && passInput) {
+            emailInput.value = 'demo@gmail.com';
+            passInput.value = '123';
+            emailInput.focus();
+        }
     }
 </script>
 @endsection

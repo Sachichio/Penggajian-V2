@@ -30,4 +30,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Cek apakah user saat ini adalah akun demo
+     */
+    public function isDemo(): bool
+    {
+        return $this->email === 'demo@gmail.com';
+    }
 }

@@ -22,6 +22,13 @@ class JabatanController extends Controller
      */
     public function create()
     {
+        // Cegah pembukaan form tambah jika kuota akun demo sudah penuh
+        if (auth()->check() && auth()->user()->isDemo() && Jabatan::count() >= 10) {
+            return redirect()
+                ->route('jabatan.index')
+                ->with('error', 'Batas kuota maksimal 10 jabatan untuk akun demo telah tercapai. Hapus salah satu data untuk menambah kembali.');
+        }
+
         return view('pages.jabatan.create');
     }
 
@@ -30,6 +37,13 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
+        // Pembatasan Kuota Akun Demo (Maksimal 10 Jabatan)
+        if (auth()->check() && auth()->user()->isDemo() && Jabatan::count() >= 10) {
+            return redirect()
+                ->route('jabatan.index')
+                ->with('error', 'Batas kuota maksimal 10 jabatan untuk akun demo telah tercapai. Hapus salah satu data untuk mencoba menambah kembali.');
+        }
+
         $validated = $request->validate([
             'nama_jabatan' => 'required|string|max:255|unique:jabatans,nama_jabatan',
             'gaji_pokok'   => 'required|numeric|min:0',
