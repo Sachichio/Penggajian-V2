@@ -58,11 +58,14 @@
         .brand-symbol span:nth-child(3) { height: 20px; background: #a1b889; }
         .brand-tag { font: 600 7px 'DM Sans', sans-serif; letter-spacing: 1px; align-self: flex-end; margin: 0 0 8px -3px; color: #839087; }
 
-        .workspace-switch { display: flex; align-items: center; gap: 9px; text-align: left; border: 1px solid #e7ebe7; border-radius: 8px; padding: 11px 9px; width: 100%; margin-top: 20px; background: #fcfdfb; flex-shrink: 0; }
-        .company-icon { background: #edf0e8; color: #5e7450; height: 33px; width: 33px; display: grid; place-items: center; border-radius: 7px; flex-shrink: 0; }
+        .workspace-switch { display: flex; align-items: center; gap: 9px; text-align: left; border: 1px solid #e7ebe7; border-radius: 8px; padding: 11px 9px; width: 100%; margin-top: 20px; background: #fcfdfb; flex-shrink: 0; text-decoration: none; transition: all 0.2s ease; cursor: pointer; }
+        .workspace-switch:hover { border-color: #cbd8c8; background: #f5f8f2; box-shadow: 0 2px 6px -1px rgba(50, 100, 70, 0.08); }
+        .company-icon { background: #edf0e8; color: #5e7450; height: 33px; width: 33px; display: grid; place-items: center; border-radius: 7px; flex-shrink: 0; overflow: hidden; transition: background 0.2s, color 0.2s; }
+        .workspace-switch:hover .company-icon { background: #e2ecd9; color: #386245; }
         .workspace-switch strong { font-size: 10.5px; font-weight: 650; display: block; color: #232c25; }
         .workspace-switch small { color: #939b94; font-size: 9px; display: block; margin-top: 4px; }
-        .workspace-switch > svg { margin-left: auto; color: #8f9891; }
+        .workspace-switch > svg { margin-left: auto; color: #8f9891; transition: transform 0.2s ease, color 0.2s ease; }
+        .workspace-switch:hover > svg { color: #386245; transform: translateX(2px); }
 
         .nav-caption { font-size: 9px; font-weight: 600; letter-spacing: 1.35px; color: #949e97; padding: 20px 13px 10px; flex-shrink: 0; }
         .nav-item { display: flex; align-items: center; gap: 12px; height: 42px; padding: 0 13px; color: #6c756f; width: 100%; border-radius: 7px; margin-bottom: 4px; font-weight: 500; font-size: 12px; text-align: left; text-decoration: none; flex-shrink: 0; }
@@ -243,21 +246,28 @@
         </a>
 
         {{-- Workspace Switcher Button --}}
-        <div class="workspace-switch">
+        @php
+            $activeCompany = \App\Models\CompanySetting::getSettings();
+        @endphp
+        <a href="{{ route('company.edit') }}" class="workspace-switch" title="Buka Pengaturan Profil Perusahaan">
             <span class="company-icon">
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="7" width="18" height="14" rx="2" />
-                    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12a22 22 0 0 0 18 0M12 11v4" />
-                </svg>
+                @if($activeCompany->logo && file_exists(public_path($activeCompany->logo)))
+                    <img src="{{ asset($activeCompany->logo) }}" alt="Logo" class="h-full w-full object-contain p-0.5">
+                @else
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="7" width="18" height="14" rx="2" />
+                        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12a22 22 0 0 0 18 0M12 11v4" />
+                    </svg>
+                @endif
             </span>
-            <span>
-                <strong>PT. Sejahtera Bersama</strong>
+            <span class="min-w-0 flex-1">
+                <strong class="truncate">{{ $activeCompany->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}</strong>
                 <small>Workspace perusahaan</small>
             </span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 5 7 7-7 7" />
             </svg>
-        </div>
+        </a>
 
         {{-- Menu Utama --}}
         <div class="nav-caption">MENU UTAMA</div>

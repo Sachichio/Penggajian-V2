@@ -107,7 +107,7 @@
             {{-- Footer Kartu --}}
             <div class="mt-6 pt-4 border-t border-[#edf1e8]">
                 <p class="text-[11px] text-[#939e94]">
-                    © 2026 gajiku. · PT. Sejahtera Bersama
+                    © {{ date('Y') }} gajiku. · {{ \App\Models\CompanySetting::getSettings()->nama_perusahaan ?? 'PT. Sejahtera Bersama' }}
                 </p>
             </div>
         </div>
