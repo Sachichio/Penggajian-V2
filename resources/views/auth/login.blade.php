@@ -1,6 +1,6 @@
 @extends('layouts.guest')
 
-@section('title', 'Masuk ke Akun — gajiku.')
+@section('title', 'Masuk ke Akun')
 
 @section('content')
 <div class="min-h-screen bg-canvas font-sans text-ink w-full max-w-full overflow-x-hidden">
